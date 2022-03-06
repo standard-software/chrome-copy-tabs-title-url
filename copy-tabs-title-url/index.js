@@ -173,10 +173,49 @@ const onClickMenuItem = function(evt) {
   copyTitleURL(menuItemId)
 }
 
+const onClickCheckboxURLShortAmazon = e => {
+  state.shortAmazonURL = e.srcElement.checked;
+}
+const onClickCheckboxURLNoEncodeJapanese = e => {
+  state.noEncodeJapaneseURL = e.srcElement.checked;
+}
+const onClickCheckboxURLDeleteParameter = e => {
+  state.deleteURLParameter = e.srcElement.checked;
+}
+const onClickCheckboxTitleDeleteStartBracket = e => {
+  state.deleteTitleStartBracket = e.srcElement.checked;
+}
+
 const onLoaded = _ => {
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
     el.addEventListener("click", onClickMenuItem);
   });
+
+  document.querySelector("#checkboxURLShortAmazon")
+    .addEventListener("click", onClickCheckboxURLShortAmazon);
+  document.querySelector("#checkboxURLNoEncodeJapanese")
+    .addEventListener("click", onClickCheckboxURLNoEncodeJapanese);
+  document.querySelector("#checkboxURLDeleteParameter")
+    .addEventListener("click", onClickCheckboxURLDeleteParameter);
+  document.querySelector("#checkboxTitleDeleteStartBracket")
+    .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
+
+  if (state.shortAmazonURL) {
+    document.querySelector("#checkboxURLShortAmazon input")
+      .checked = true;
+  }
+  if (state.noEncodeJapaneseURL) {
+    document.querySelector("#checkboxURLNoEncodeJapanese input")
+      .checked = true;
+  }
+  if (state.deleteURLParameter) {
+    document.querySelector("#checkboxURLDeleteParameter input")
+      .checked = true;
+  }
+  if (state.deleteTitleStartBracket) {
+    document.querySelector("#checkboxTitleDeleteStartBracket input")
+      .checked = true;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", onLoaded);
