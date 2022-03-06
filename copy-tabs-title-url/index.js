@@ -129,7 +129,8 @@ const copyTitleURL = menuItemId => {
         let title = tab.title;
         url = formatURL(url, state);
         title = formatTitle(title, state);
-        text += `${title}\n${url}\n\n`
+        text += text === '' ? '' : '\n';
+        text += `${title}\n${url}\n`
       }
     } break;
 
