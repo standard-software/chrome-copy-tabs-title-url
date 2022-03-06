@@ -13,10 +13,20 @@ ul {
 }
 
 li {
-  padding: 8px 16px;
+  padding: 5px 16px;
   text-decoration: none;
   color: #ffffff;
   text-align: left;
+  height: 50px;
+  font-size: 16px;
+  position: relative;
+}
+
+li div {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 }
 
 li:hover {
@@ -32,23 +42,28 @@ li:hover {
   background-color: #292A2D;
 }
 
+.checkboxs label {
+  line-height: 45px;
+  display: block;
+}
+
+.checkboxs label:hover {
+  background-color: #414245;
+}
+
 .checkboxs input {
   position: relative;
-  top: 13.33333px;
-  right: 0;
-  bottom: 0;
-  left: 0;
   width: 30px;
   height: 30px;
   margin-right: 0.5rem;
+  margin-left: 0.8rem;
   cursor: pointer;
   transition: all 0.15s ease-out 0s;
   color: #292A2D;
-  border: none;
-  outline: none;
   background: #505050;
   -webkit-appearance: none;
           appearance: none;
+  vertical-align: middle;
 }
 
 .checkboxs input:hover {
@@ -70,11 +85,3 @@ li:hover {
   text-align: center;
 }
 
-.checkboxs label {
-  line-height: 40px;
-  display: block;
-}
-
-.checkboxs label:hover {
-  background-color: #414245;
-}
