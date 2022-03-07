@@ -1,6 +1,7 @@
 body {
   width: 300px;
   margin: 0;
+  background-color: #292A2D;
 }
 
 /* Menu */
@@ -13,12 +14,14 @@ ul {
 }
 
 li {
-  padding: 5px 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
   text-decoration: none;
   color: #ffffff;
   text-align: left;
-  height: 50px;
   font-size: 16px;
+  height: 50px;
   position: relative;
 }
 
@@ -35,15 +38,15 @@ li:hover {
 
 /* Checkbox */
 .checkboxs {
-  border-top: 1px white;
-  padding-top: 10px;
+  border-top: 1px solid #292A2D;
+  /* padding-top: 10px; */
   text-align: left;
   color: #ffffff;
   background-color: #292A2D;
 }
 
 .checkboxs label {
-  line-height: 45px;
+  /* line-height: 45px; */
   display: block;
 }
 
@@ -53,8 +56,8 @@ li:hover {
 
 .checkboxs input {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   margin-right: 0.5rem;
   margin-left: 0.8rem;
   cursor: pointer;
@@ -76,12 +79,79 @@ li:hover {
 
 .checkboxs input:checked::before {
   font-size: 20px;
-  line-height: 30px;
+  line-height: 20px;
   position: absolute;
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   content: '✔';
   text-align: center;
 }
 
+/* accordion */
+.accordion_area {
+  border-top: 1px solid #1b2538;
+}
+
+.accordion_area .accordion {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 1px;
+  color: #1b2538;
+}
+.accordion_area .accordion > input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* 質問 */
+.accordion_area .accordion label {
+  font-weight: bold;
+  line-height: 1.6;
+  position: relative;
+  display: block;
+  margin: 0 0 0 0;
+  padding: 1em 2em 1em 1em;
+  cursor: pointer;
+  border-bottom: 1px solid #1b2538;
+  color: #ffffff;
+}
+.accordion_area .accordion label:hover {
+  background-color: #414245;
+}
+
+.accordion_area .accordion .accordion-content {
+  overflow: hidden;
+  max-height: 0;
+  -webkit-transition: max-height 0.5s ease;
+          transition: max-height 0.5s ease;
+  color: #ffffff;
+}
+.accordion_area .accordion .accordion-content p {
+  margin: 1em;
+}
+
+.accordion_area .accordion > input:checked ~ .accordion-content {
+  max-height: 40em;
+}
+
+.accordion_area .accordion label::after {
+  line-height: 1.6;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: block;
+  width: 3em;
+  margin-top: -12.5px;
+  -webkit-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+  text-align: center;
+}
+.accordion_area .accordion > input[type=checkbox] + label::after {
+  content: '\25BC';
+}
+.accordion_area .accordion > input[type=checkbox]:checked + label::after {
+  -webkit-transform: rotateX(180deg);
+          transform: rotateX(180deg);
+}
