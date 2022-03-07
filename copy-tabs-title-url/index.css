@@ -89,54 +89,49 @@ li:hover {
 }
 
 /* accordion */
-.accordion_area {
-  border-top: 1px solid #1b2538;
-}
-
-.accordion_area .accordion {
+.accordion {
   position: relative;
   overflow: hidden;
   width: 100%;
   margin-bottom: 1px;
-  color: #1b2538;
 }
-.accordion_area .accordion > input {
+
+.accordion > input {
   position: absolute;
   opacity: 0;
 }
 
-/* 質問 */
-.accordion_area .accordion label {
+.accordion > label {
   font-weight: bold;
   line-height: 1.6;
   position: relative;
   display: block;
   margin: 0 0 0 0;
-  padding: 1em 2em 1em 1em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
   cursor: pointer;
   border-bottom: 1px solid #1b2538;
   color: #ffffff;
+  background-color: #292A2D;
 }
-.accordion_area .accordion label:hover {
+.accordion > label:hover {
   background-color: #414245;
 }
 
-.accordion_area .accordion .accordion-content {
+.accordion > .accordion-content {
   overflow: hidden;
   max-height: 0;
   -webkit-transition: max-height 0.5s ease;
           transition: max-height 0.5s ease;
   color: #ffffff;
 }
-.accordion_area .accordion .accordion-content p {
-  margin: 1em;
-}
 
-.accordion_area .accordion > input:checked ~ .accordion-content {
+.accordion > input:checked ~ .accordion-content {
   max-height: 40em;
 }
 
-.accordion_area .accordion label::after {
+.accordion label::after {
   line-height: 1.6;
   position: absolute;
   top: 50%;
@@ -148,10 +143,10 @@ li:hover {
           transition: all 0.5s ease;
   text-align: center;
 }
-.accordion_area .accordion > input[type=checkbox] + label::after {
+.accordion > input[type=checkbox] + label::after {
   content: '\25BC';
 }
-.accordion_area .accordion > input[type=checkbox]:checked + label::after {
+.accordion > input[type=checkbox]:checked + label::after {
   -webkit-transform: rotateX(180deg);
           transform: rotateX(180deg);
 }

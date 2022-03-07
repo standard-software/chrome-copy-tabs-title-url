@@ -6,6 +6,9 @@
     "default_popup": "index.html",
     "default_icon": "icon/icon16x16.png"
   },
-  "permissions": ["tabs"],
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
   "manifest_version": 2
 }

@@ -1,5 +1,6 @@
 
-let state = {
+const state = {
+  settingExpand: true,
   shortAmazonURL: true,
   noEncodeJapaneseURL: true,
   deleteURLParameter: false,
@@ -173,17 +174,27 @@ const onClickMenuItem = function(evt) {
   copyTitleURL(menuItemId)
 }
 
+const setStorageParameter = (key, value) => {
+  state[key] = value;
+  chrome.storage.local.set({[key]: value}, () => {});
+  console.log({key, value});
+}
+
+const onClickAccordionSetting = e => {
+  console.log({e})
+  setStorageParameter('settingExpand', e.srcElement.checked);
+}
 const onClickCheckboxURLShortAmazon = e => {
-  state.shortAmazonURL = e.srcElement.checked;
+  setStorageParameter('shortAmazonURL', e.srcElement.checked);
 }
 const onClickCheckboxURLNoEncodeJapanese = e => {
-  state.noEncodeJapaneseURL = e.srcElement.checked;
+  setStorageParameter('noEncodeJapaneseURL', e.srcElement.checked);
 }
 const onClickCheckboxURLDeleteParameter = e => {
-  state.deleteURLParameter = e.srcElement.checked;
+  setStorageParameter('deleteURLParameter', e.srcElement.checked);
 }
 const onClickCheckboxTitleDeleteStartBracket = e => {
-  state.deleteTitleStartBracket = e.srcElement.checked;
+  setStorageParameter('deleteTitleStartBracket', e.srcElement.checked);
 }
 
 const onLoaded = _ => {
@@ -191,6 +202,8 @@ const onLoaded = _ => {
     el.addEventListener("click", onClickMenuItem);
   });
 
+  document.querySelector("#accordionInputSetting")
+    .addEventListener("click", onClickAccordionSetting);
   document.querySelector("#checkboxURLShortAmazon")
     .addEventListener("click", onClickCheckboxURLShortAmazon);
   document.querySelector("#checkboxURLNoEncodeJapanese")
@@ -200,22 +213,26 @@ const onLoaded = _ => {
   document.querySelector("#checkboxTitleDeleteStartBracket")
     .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
 
-  if (state.shortAmazonURL) {
-    document.querySelector("#checkboxURLShortAmazon input")
-      .checked = true;
-  }
-  if (state.noEncodeJapaneseURL) {
-    document.querySelector("#checkboxURLNoEncodeJapanese input")
-      .checked = true;
-  }
-  if (state.deleteURLParameter) {
-    document.querySelector("#checkboxURLDeleteParameter input")
-      .checked = true;
-  }
-  if (state.deleteTitleStartBracket) {
-    document.querySelector("#checkboxTitleDeleteStartBracket input")
-      .checked = true;
-  }
+  const getStorageParameter = (key, selector) => {
+    chrome.storage.local.get(key, ({[key]: result}) => {
+      if (result === true) {
+        state[key] = true;
+      } else if (result === false) {
+        state[key] = false;
+      }
+      if (state[key]) {
+        document.querySelector(`${selector}`)
+          .checked = true;
+      }
+      console.log('getStorageParameter', result, key, state[key]);
+    });
+  };
+  getStorageParameter('settingExpand', '#accordionInputSetting')
+  getStorageParameter('shortAmazonURL', '#checkboxInputURLShortAmazon')
+  getStorageParameter('noEncodeJapaneseURL', '#checkboxInputURLNoEncodeJapanese')
+  getStorageParameter('deleteURLParameter', '#checkboxInputURLDeleteParameter')
+  getStorageParameter('deleteTitleStartBracket', '#checkboxInputTitleDeleteStartBracket')
+
 }
 
 document.addEventListener("DOMContentLoaded", onLoaded);
