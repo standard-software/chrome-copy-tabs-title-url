@@ -2,6 +2,10 @@
   "name": "copy-tabs-title-url",
   "version": "0.1.0",
   "description": "Copy the title and URL from a Chrome tab",
+  "icons": {
+    "16": "icon/icon16x16.png",
+    "128": "icon/icon128x128.png"
+  },
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": "icon/icon16x16.png"
