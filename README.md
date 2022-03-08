@@ -1,9 +1,18 @@
 # Chrome Extention: Copy Tabs Title Url
 
+## Screenshot
+
+menu setting Collapse
+![menu_setting](./image/menu_setting.png)
+
+menu setting Expand
+![menu](./image/menu.png)
+
 ## GitHub
 
 standard-software/chrome-copy-tabs-title-url
 https://github.com/standard-software/chrome-copy-tabs-title-url
+
 
 ## How to Install for developer
 
