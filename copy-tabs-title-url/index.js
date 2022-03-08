@@ -80,17 +80,27 @@ const urlDeleteParameter = rawUrl => {
 }
 
 const titleDeleteStartBracket = title => {
-  if (!title.trim().startsWith('(')) {
-    return title;
+  const excludeBracket = (start, end) => {
+    const indexStartbracket = _indexOfFirst(title, start);
+    const indexEndbracket = _indexOfFirst(title, end);
+
+    if (indexStartbracket === -1 || indexEndbracket === -1) {
+      return title;
+    }
+    if (indexEndbracket < indexStartbracket) {
+      return title;
+    }
+
+    let result = _subFirstDelimFirst(title, start);
+    result += _subLastDelimFirst(title, end);
+    return result;
   }
-  if (!title.includes(')')) {
-    return title;
-  }
-  let result = _subLastDelimFirst(title, ') ');
+
+  let result  = excludeBracket('(', ') ');
   if (result !== title) {
     return result;
   }
-  result = _subLastDelimFirst(title, ')');
+  result = excludeBracket('(', ')');
   return result;
 }
 
@@ -177,11 +187,11 @@ const onClickMenuItem = function(evt) {
 const setStorageParameter = (key, value) => {
   state[key] = value;
   chrome.storage.local.set({[key]: value}, () => {});
-  console.log({key, value});
+  // console.log({key, value});
 }
 
 const onClickAccordionSetting = e => {
-  console.log({e})
+  // console.log({e})
   setStorageParameter('settingExpand', e.srcElement.checked);
 }
 const onClickCheckboxURLShortAmazon = e => {
@@ -224,7 +234,7 @@ const onLoaded = _ => {
         document.querySelector(`${selector}`)
           .checked = true;
       }
-      console.log('getStorageParameter', result, key, state[key]);
+      // console.log('getStorageParameter', result, key, state[key]);
     });
   };
   getStorageParameter('settingExpand', '#accordionInputSetting')
