@@ -1,4 +1,4 @@
-# Chrome Extention: Copy Tabs Title Url
+# <img src="./copy-tabs-title-url/icon/icon128x128.png" width="40px" style="vertical-align:middle; margin-right:10px;">Chrome Extention: Copy Tabs Title Url
 
 ## Screenshot
 
