@@ -14,5 +14,12 @@
     "tabs",
     "storage"
   ],
+
+  "author": {
+    "name": "Satoshi Yamamoto",
+    "email": "standard.software.net@gmail.com",
+    "url": "https://www.facebook.com/stndardsoftware"
+  },
+
   "manifest_version": 3
 }
