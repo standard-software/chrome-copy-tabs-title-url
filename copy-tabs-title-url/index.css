@@ -150,3 +150,38 @@ li:hover {
   -webkit-transform: rotateX(180deg);
           transform: rotateX(180deg);
 }
+
+/* copy view */
+.copy-view-container {
+  display: flex;
+}
+
+.copy-view-textarea {
+  width: 100%;
+  height: 130px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: white;
+  background-color: #292A2D;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  resize: none;
+  outline: none;
+}
+.copy-view-textarea::-webkit-scrollbar{
+  width: 15px;
+  height: 15px;
+}
+.copy-view-textarea::-webkit-scrollbar-track{
+  background: #424242;
+  border: none;
+}
+.copy-view-textarea::-webkit-scrollbar-thumb{
+  background: #686868;
+  box-shadow: none;
+}
+.copy-view-textarea::-webkit-scrollbar-corner {
+  background: #292A2D;
+}

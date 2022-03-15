@@ -2,17 +2,19 @@
 
 ## Screenshot
 
-menu setting Collapse
-![menu_setting](./image/menu_setting.png)
+menu expand
+![menu_expand](./image/menu_1.png)
 
-menu setting Expand
-![menu](./image/menu.png)
+menu collapse Copy View
+![menu](./image/menu_2.png)
+
+menu collapse Setting
+![menu](./image/menu_3.png)
 
 ## GitHub
 
 standard-software/chrome-copy-tabs-title-url
 https://github.com/standard-software/chrome-copy-tabs-title-url
-
 
 ## How to Install for developer
 
@@ -25,4 +27,14 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 - Specify the folder path
   .../chrome-copy-tabs-title-url/copy-tabs-title-url
 - chrome browser: add extension icon copy-tabs-title-url
+
+## Version
+
+### v0.2.0
+2022/03/15(Tue)
+- Add Copy View
+
+### v0.1.0
+2022/03/09(Wed)
+- First Release
 

@@ -52,8 +52,8 @@
 
     <div>
       <div class="accordion">
-        <input id="accordionInputSetting" type="checkbox">
-        <label for="accordionInputSetting" id="accordionSetting">Setting</label>
+        <input id="accordionSetting" type="checkbox">
+        <label for="accordionSetting" id="accordionSetting">Setting</label>
         <div class="checkboxs accordion-content">
 
           <label id="checkboxURLShortAmazon">
@@ -78,6 +78,20 @@
 
         </div>
       </div>
+
+      <div class="accordion">
+        <input id="accordionCopyView" type="checkbox">
+        <label for="accordionCopyView">Copy View</label>
+        <div class="accordion-content copy-view-container">
+          <textarea
+            id="copyView" class="copy-view-textarea" wrap="off"
+            readonly
+            placeholder="When copy view is expanded,
+menu item click does not close"
+          ></textarea>
+        </div>
+      </div>
+
 
 
     </div>

@@ -1,10 +1,11 @@
 
 const state = {
-  settingExpand: true,
+  expandSetting: true,
   shortAmazonURL: true,
   noEncodeJapaneseURL: true,
   deleteURLParameter: false,
   deleteTitleStartBracket: true,
+  expandCopyView: true,
 }
 
 const copyText = str => {
@@ -173,7 +174,12 @@ const copyTitleURL = menuItemId => {
     }
 
     copyText(text);
-    window.close();
+    if (state.expandCopyView === true) {
+      const copyViewArea = document.querySelector("#copyView");
+      copyViewArea.textContent = `${text}\ncopied.`;
+    } else {
+      window.close();
+    }
 
   })
 }
@@ -192,7 +198,7 @@ const setStorageParameter = (key, value) => {
 
 const onClickAccordionSetting = e => {
   // console.log({e})
-  setStorageParameter('settingExpand', e.srcElement.checked);
+  setStorageParameter('expandSetting', e.srcElement.checked);
 }
 const onClickCheckboxURLShortAmazon = e => {
   setStorageParameter('shortAmazonURL', e.srcElement.checked);
@@ -206,13 +212,16 @@ const onClickCheckboxURLDeleteParameter = e => {
 const onClickCheckboxTitleDeleteStartBracket = e => {
   setStorageParameter('deleteTitleStartBracket', e.srcElement.checked);
 }
+const onClickAccordionCopyView = e => {
+  setStorageParameter('expandCopyView', e.srcElement.checked);
+}
 
 const onLoaded = _ => {
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
     el.addEventListener("click", onClickMenuItem);
   });
 
-  document.querySelector("#accordionInputSetting")
+  document.querySelector("#accordionSetting")
     .addEventListener("click", onClickAccordionSetting);
   document.querySelector("#checkboxURLShortAmazon")
     .addEventListener("click", onClickCheckboxURLShortAmazon);
@@ -222,6 +231,8 @@ const onLoaded = _ => {
     .addEventListener("click", onClickCheckboxURLDeleteParameter);
   document.querySelector("#checkboxTitleDeleteStartBracket")
     .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
+  document.querySelector("#accordionCopyView")
+    .addEventListener("click", onClickAccordionCopyView);
 
   const getStorageParameter = (key, selector) => {
     chrome.storage.local.get(key, ({[key]: result}) => {
@@ -237,11 +248,12 @@ const onLoaded = _ => {
       // console.log('getStorageParameter', result, key, state[key]);
     });
   };
-  getStorageParameter('settingExpand', '#accordionInputSetting')
+  getStorageParameter('expandSetting', '#accordionSetting')
   getStorageParameter('shortAmazonURL', '#checkboxInputURLShortAmazon')
   getStorageParameter('noEncodeJapaneseURL', '#checkboxInputURLNoEncodeJapanese')
   getStorageParameter('deleteURLParameter', '#checkboxInputURLDeleteParameter')
   getStorageParameter('deleteTitleStartBracket', '#checkboxInputTitleDeleteStartBracket')
+  getStorageParameter('expandCopyView', '#accordionCopyView')
 
 }
 
