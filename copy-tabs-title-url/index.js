@@ -5,6 +5,7 @@ const state = {
   noEncodeJapaneseURL: true,
   deleteURLParameter: false,
   deleteTitleStartBracket: true,
+  deleteTitleQuoraAnserName: true,
   expandCopyView: true,
 }
 
@@ -23,6 +24,15 @@ const _indexOfFirst = (str, search, indexStart = 0) => {
     return -1;
   }
   return str.indexOf(search, indexStart);
+};
+
+const _indexOfLast = (
+  str, search, indexStart = _max([0, str.length - 1]),
+) => {
+  if (search === '') {
+    return -1;
+  }
+  return str.lastIndexOf(search, indexStart);
 };
 
 const _subIndex = (
@@ -53,6 +63,50 @@ const _subFirstDelimFirst = (str, delimiter) => {
   } else {
     return _subIndex(str, 0, index - 1);
   }
+};
+
+const _deleteIndex = (
+  str, indexStart, indexEnd = indexStart,
+) => {
+  const startStr = str.slice(0, indexStart);
+  const endStr = str.slice(indexEnd + 1, str.length);
+  return startStr + endStr;
+};
+
+const _removeTagOuterFirst = (str, startTag, endTag) => {
+  if (str === '') { return str; }
+
+  let indexStartTag = _indexOfFirst(str, startTag);
+  if (indexStartTag === -1) {
+    return str;
+  }
+  const indexEndTag = _indexOfFirst(str, endTag, indexStartTag + startTag.length);
+  if (indexEndTag === -1) {
+    return str;
+  }
+  indexStartTag = _indexOfLast(str, startTag, indexEndTag - startTag.length);
+  if (indexStartTag === -1) {
+    return '';
+  }
+  return _deleteIndex(str, indexStartTag, indexEndTag + endTag.length - 1);
+};
+
+const _removeTagInnerFirst = (str, startTag, endTag) => {
+  if (str === '') { return str; }
+
+  let indexStartTag = _indexOfFirst(str, startTag);
+  if (indexStartTag === -1) {
+    return str;
+  }
+  const indexEndTag = _indexOfFirst(str, endTag, indexStartTag + startTag.length);
+  if (indexEndTag === -1) {
+    return str;
+  }
+  indexStartTag = _indexOfLast(str, startTag, indexEndTag - startTag.length);
+  if (indexStartTag === -1) {
+    return '';
+  }
+  return _deleteIndex(str, indexStartTag + startTag.length, indexEndTag + - 1);
 };
 
 const urlShortAmazon = rawUrl => {
@@ -108,6 +162,18 @@ const titleDeleteStartBracket = title => {
 const formatURL = (url, state) => {
   // console.log('formatURL', {url, state});
 
+
+  return url;
+}
+
+const formatTitleURL = ({title, url, state}) => {
+  if (state.deleteTitleStartBracket) {
+    title = titleDeleteStartBracket(title);
+  }
+  if (state.deleteTitleQuoraAnserName) {
+    title = _removeTagInnerFirst(title, 'に対する', '回答')
+  }
+
   if (state.deleteURLParameter) {
     url = urlDeleteParameter(url);
   }
@@ -117,15 +183,8 @@ const formatURL = (url, state) => {
   if (state.noEncodeJapaneseURL) {
     url = urlNoEncodeJapanese(url);
   }
-  return url;
-}
 
-const formatTitle = (title, state) => {
-  // console.log('formatTitle', {title, state});
-  if (state.deleteTitleStartBracket) {
-    title = titleDeleteStartBracket(title);
-  }
-  return title;
+  return { title, url };
 }
 
 const copyTitleURL = menuItemId => {
@@ -137,10 +196,7 @@ const copyTitleURL = menuItemId => {
     case 'SelectTabs-TitleURL': {
       // console.log('copyTitleURL SelectTabs-TitleURL', tabs)
       for (const tab of tabs) {
-        let url = tab.url;
-        let title = tab.title;
-        url = formatURL(url, state);
-        title = formatTitle(title, state);
+        const { title, url } = formatTitleURL({...tab, state});
         text += text === '' ? '' : '\n';
         text += `${title}\n${url}\n`
       }
@@ -148,26 +204,21 @@ const copyTitleURL = menuItemId => {
 
     case 'SelectTabs-Markdown': {
       for (const tab of tabs) {
-        let url = tab.url;
-        let title = tab.title;
-        url = formatURL(url, state);
-        title = formatTitle(title, state);
+        const { title, url } = formatTitleURL({...tab, state});
         text += `[${title}](${url})\n`
       }
     } break;
 
     case 'SelectTabs-Title': {
       for (const tab of tabs) {
-        let title = tab.title;
-        title = formatTitle(title, state);
+        const { title } = formatTitleURL({...tab, state});
         text += `${title}\n`
       }
     } break;
 
     case 'SelectTabs-URL': {
       for (const tab of tabs) {
-        let url = tab.url;
-        url = formatURL(url, state);
+        const { url } = formatTitleURL({...tab, state});
         text += `${url}\n`
       }
     } break;
@@ -212,11 +263,18 @@ const onClickCheckboxURLDeleteParameter = e => {
 const onClickCheckboxTitleDeleteStartBracket = e => {
   setStorageParameter('deleteTitleStartBracket', e.srcElement.checked);
 }
+const onClickCheckboxTitleDeleteQuoraAnserName = e => {
+  setStorageParameter('deleteTitleQuoraAnserName', e.srcElement.checked);
+}
 const onClickAccordionCopyView = e => {
   setStorageParameter('expandCopyView', e.srcElement.checked);
 }
 
-const onLoaded = _ => {
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("#copyView").placeholder =
+    "Copy Tabs Title URL\nver 0.3.0 beta\n\n" +
+    "When copy view is expanded,\nmenu item click does not close."
+
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
     el.addEventListener("click", onClickMenuItem);
   });
@@ -231,6 +289,8 @@ const onLoaded = _ => {
     .addEventListener("click", onClickCheckboxURLDeleteParameter);
   document.querySelector("#checkboxTitleDeleteStartBracket")
     .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
+  document.querySelector("#checkboxTitleDeleteQuoraAnswerName")
+    .addEventListener("click", onClickCheckboxTitleDeleteQuoraAnserName);
   document.querySelector("#accordionCopyView")
     .addEventListener("click", onClickAccordionCopyView);
 
@@ -253,8 +313,7 @@ const onLoaded = _ => {
   getStorageParameter('noEncodeJapaneseURL', '#checkboxInputURLNoEncodeJapanese')
   getStorageParameter('deleteURLParameter', '#checkboxInputURLDeleteParameter')
   getStorageParameter('deleteTitleStartBracket', '#checkboxInputTitleDeleteStartBracket')
+  getStorageParameter('deleteTitleQuoraAnserName', '#checkboxInputTitleDeleteQuoraAnswerName')
   getStorageParameter('expandCopyView', '#accordionCopyView')
 
-}
-
-document.addEventListener("DOMContentLoaded", onLoaded);
+});

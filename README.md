@@ -30,6 +30,10 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 
 ## Version
 
+### v0.3.0
+2022/03/19(Sat)
+- Delete Quora AnserName form Title(Japanese)
+
 ### v0.2.0
 2022/03/15(Tue)
 - Add Copy View
