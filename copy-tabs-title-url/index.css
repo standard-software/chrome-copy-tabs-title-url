@@ -46,8 +46,7 @@ li:hover {
 }
 
 .checkboxs label {
-  /* line-height: 45px; */
-  display: block;
+  display: inline-flex;
 }
 
 .checkboxs label:hover {
@@ -58,6 +57,8 @@ li:hover {
   position: relative;
   width: 20px;
   height: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-right: 0.5rem;
   margin-left: 0.8rem;
   cursor: pointer;

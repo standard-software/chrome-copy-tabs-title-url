@@ -73,38 +73,36 @@ const _deleteIndex = (
   return startStr + endStr;
 };
 
-const _removeTagOuterFirst = (str, startTag, endTag) => {
-  if (str === '') { return str; }
-
-  let indexStartTag = _indexOfFirst(str, startTag);
-  if (indexStartTag === -1) {
-    return str;
-  }
-  const indexEndTag = _indexOfFirst(str, endTag, indexStartTag + startTag.length);
-  if (indexEndTag === -1) {
-    return str;
-  }
-  indexStartTag = _indexOfLast(str, startTag, indexEndTag - startTag.length);
-  if (indexStartTag === -1) {
-    return '';
-  }
-  return _deleteIndex(str, indexStartTag, indexEndTag + endTag.length - 1);
-};
-
 const _removeTagInnerFirst = (str, startTag, endTag) => {
   if (str === '') { return str; }
 
-  let indexStartTag = _indexOfFirst(str, startTag);
-  if (indexStartTag === -1) {
-    return str;
+  let indexStartTag;
+  if (startTag === '') {
+    indexStartTag = 0;
+  } else {
+    indexStartTag = _indexOfFirst(str, startTag);
+    if (indexStartTag === -1) {
+      return str;
+    }
   }
-  const indexEndTag = _indexOfFirst(str, endTag, indexStartTag + startTag.length);
-  if (indexEndTag === -1) {
-    return str;
+
+  let indexEndTag;
+  if (endTag === '') {
+    indexEndTag = str.length - 1;
+  } else {
+    indexEndTag = _indexOfFirst(str, endTag, indexStartTag + startTag.length);
+    if (indexEndTag === -1) {
+      return str;
+    }
   }
-  indexStartTag = _indexOfLast(str, startTag, indexEndTag - startTag.length);
-  if (indexStartTag === -1) {
-    return '';
+
+  if (startTag !== '') {
+    // support
+    //  AAA<<<BBB<<<CCC>>>DDD
+    indexStartTag = _indexOfLast(str, startTag, indexEndTag - startTag.length);
+    if (indexStartTag === -1) {
+      throw new Error('_removeTagInnerFirst')
+    }
   }
   return _deleteIndex(str, indexStartTag + startTag.length, indexEndTag + - 1);
 };
@@ -125,7 +123,12 @@ const urlShortAmazon = rawUrl => {
 }
 
 const urlNoEncodeJapanese = url => {
-  return decodeURI(url);
+  let result = url;
+  try {
+    result = decodeURI(url);
+  } catch (e) {
+  }
+  return result;
 }
 
 const urlDeleteParameter = rawUrl => {
@@ -171,7 +174,8 @@ const formatTitleURL = ({title, url, state}) => {
     title = titleDeleteStartBracket(title);
   }
   if (state.deleteTitleQuoraAnserName) {
-    title = _removeTagInnerFirst(title, 'に対する', '回答')
+    title = _removeTagInnerFirst(title, 'に対する', '回答');
+    title = _removeTagInnerFirst(title, '', "'s answer to").replace("'s ", '');
   }
 
   if (state.deleteURLParameter) {
