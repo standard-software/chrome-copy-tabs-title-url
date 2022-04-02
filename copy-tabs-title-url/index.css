@@ -47,6 +47,7 @@ li:hover {
 
 .checkboxs label {
   display: inline-flex;
+  width: 100%;
 }
 
 .checkboxs label:hover {
