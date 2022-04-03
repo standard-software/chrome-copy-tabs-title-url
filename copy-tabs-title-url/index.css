@@ -11,6 +11,7 @@ ul {
   padding: 0;
   color: #ffffff;
   background-color: #292A2D;
+  user-select: none;
 }
 
 li {
@@ -21,7 +22,7 @@ li {
   color: #ffffff;
   text-align: left;
   font-size: 16px;
-  height: 50px;
+  height: 40px;
   position: relative;
 }
 
@@ -48,6 +49,9 @@ li:hover {
 .checkboxs label {
   display: inline-flex;
   width: 100%;
+  height: 32px;
+  align-items: center;
+  user-select: none;
 }
 
 .checkboxs label:hover {
@@ -96,6 +100,8 @@ li:hover {
   overflow: hidden;
   width: 100%;
   margin-bottom: 1px;
+  user-select: none;
+  /* padding-bottom: 10px; */
 }
 
 .accordion > input {
@@ -107,15 +113,17 @@ li:hover {
   font-weight: bold;
   line-height: 1.6;
   position: relative;
-  display: block;
   margin: 0 0 0 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  height: 32px;
   padding-left: 25px;
   cursor: pointer;
   border-bottom: 1px solid #1b2538;
   color: #ffffff;
   background-color: #292A2D;
+
+  display: table-cell;
+  vertical-align: middle;
+  width: 100vh;
 }
 .accordion > label:hover {
   background-color: #414245;

@@ -53,34 +53,46 @@
     <div>
       <div class="accordion">
         <input id="accordionSetting" type="checkbox">
-        <label for="accordionSetting" id="accordionSetting">Setting</label>
+        <label for="accordionSetting" id="accordionSetting">
+          <div>
+            Setting
+          </div>
+        </label>
         <div class="checkboxs accordion-content">
 
           <label id="checkboxURLShortAmazon">
             <input type="checkbox" id="checkboxInputURLShortAmazon" >
-            Short Amazon URL
+            <div>
+              Short Amazon URL
+            </div>
           </label>
   
           <label id="checkboxURLNoEncodeJapanese">
             <input type="checkbox" id="checkboxInputURLNoEncodeJapanese" >
-            No Encode Japanese URL
+            <div>
+              No Encode Japanese URL
+            </div>
           </label>
   
           <label id="checkboxURLDeleteParameter">
             <input type="checkbox" id="checkboxInputURLDeleteParameter" >
-            Delete Parameter From URL
+            <div>
+              Delete Parameter From URL
+            </div>
           </label>
   
           <label id="checkboxTitleDeleteStartBracket">
             <input type="checkbox" id="checkboxInputTitleDeleteStartBracket" >
-            Delete Bracket (---) From Title 
+            <div>
+              Remove Bracketed (---) From Title 
+            </div>
           </label>
   
-          <label id="checkboxTitleDeleteQuoraAnswerName">
+          <label id="checkboxTitleDeleteQuoraAnswerName" style="margin-bottom: 10px;">
             <input type="checkbox" id="checkboxInputTitleDeleteQuoraAnswerName" >
             <div>
-            Quora (English and Japanse) <br>
-            Delete Answer Account Name From Title
+              Remove Answer's Name From Title<br>
+              On Quora (English and Japanese)
             </div>
           </label>
 
@@ -89,7 +101,11 @@
 
       <div class="accordion">
         <input id="accordionCopyView" type="checkbox">
-        <label for="accordionCopyView">Copy View</label>
+        <label for="accordionCopyView">
+          <div>
+            Copy View
+          </div>
+        </label>
         <div class="accordion-content copy-view-container">
           <textarea
             id="copyView" class="copy-view-textarea" wrap="off"

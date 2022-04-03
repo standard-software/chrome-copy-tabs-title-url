@@ -175,7 +175,7 @@ const formatTitleURL = ({title, url, state}) => {
   }
   if (state.deleteTitleQuoraAnserName) {
     title = _removeTagInnerFirst(title, 'に対する', '回答');
-    title = _removeTagInnerFirst(title, '', "'s answer to").replace("'s ", '');
+    title = _removeTagInnerFirst(title, '', "'s answer to").replace("'s a", 'A');
   }
 
   if (state.deleteURLParameter) {
@@ -276,7 +276,7 @@ const onClickAccordionCopyView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copyView").placeholder =
-    "Copy Tabs Title URL\nver 0.3.0 beta\n\n" +
+    "Copy Tabs Title URL\nver 0.3.1\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {

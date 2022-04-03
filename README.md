@@ -30,6 +30,11 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 
 ## Version
 
+### 0.3.1
+2022/04/02(Sat)
+- Unselect text
+- Change wording
+
 ### 0.3.0
 2022/04/02(Sat)
 - Quora (English and Japanse) Delete Answer Account Name From Title
