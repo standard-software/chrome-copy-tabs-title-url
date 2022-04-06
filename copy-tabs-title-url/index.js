@@ -6,6 +6,7 @@ const state = {
   deleteURLParameter: false,
   deleteTitleStartBracket: true,
   deleteTitleQuoraAnserName: true,
+  deleteTitleNameGitHubPullRequest: true,
   expandCopyView: true,
 }
 
@@ -177,6 +178,9 @@ const formatTitleURL = ({title, url, state}) => {
     title = _removeTagInnerFirst(title, 'に対する', '回答');
     title = _removeTagInnerFirst(title, '', "'s answer to").replace("'s a", 'A');
   }
+  if (state.deleteTitleNameGitHubPullRequest) {
+    title = _removeTagInnerFirst(title, 'by ', ' Pull Request').replace("by  ", '');
+  }
 
   if (state.deleteURLParameter) {
     url = urlDeleteParameter(url);
@@ -267,8 +271,11 @@ const onClickCheckboxURLDeleteParameter = e => {
 const onClickCheckboxTitleDeleteStartBracket = e => {
   setStorageParameter('deleteTitleStartBracket', e.srcElement.checked);
 }
-const onClickCheckboxTitleDeleteQuoraAnserName = e => {
+const onClickCheckboxTitleDeleteQuoraAnswerName = e => {
   setStorageParameter('deleteTitleQuoraAnserName', e.srcElement.checked);
+}
+const onClickCheckboxTitleDeleteNameGitHubPullRequest = e => {
+  setStorageParameter('deleteTitleNameGitHubPullRequest', e.srcElement.checked);
 }
 const onClickAccordionCopyView = e => {
   setStorageParameter('expandCopyView', e.srcElement.checked);
@@ -276,7 +283,7 @@ const onClickAccordionCopyView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copyView").placeholder =
-    "Copy Tabs Title URL\nver 0.3.1\n\n" +
+    "Copy Tabs Title URL\nver 0.4.0\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
@@ -294,7 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#checkboxTitleDeleteStartBracket")
     .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
   document.querySelector("#checkboxTitleDeleteQuoraAnswerName")
-    .addEventListener("click", onClickCheckboxTitleDeleteQuoraAnserName);
+    .addEventListener("click", onClickCheckboxTitleDeleteQuoraAnswerName);
+  document.querySelector("#checkboxTitleDeleteNameGitHubPullRequest")
+    .addEventListener("click", onClickCheckboxTitleDeleteNameGitHubPullRequest);
   document.querySelector("#accordionCopyView")
     .addEventListener("click", onClickAccordionCopyView);
 
@@ -318,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
   getStorageParameter('deleteURLParameter', '#checkboxInputURLDeleteParameter')
   getStorageParameter('deleteTitleStartBracket', '#checkboxInputTitleDeleteStartBracket')
   getStorageParameter('deleteTitleQuoraAnserName', '#checkboxInputTitleDeleteQuoraAnswerName')
+  getStorageParameter('deleteTitleNameGitHubPullRequest', '#checkboxInputTitleDeleteNameGitHubPullRequest')
   getStorageParameter('expandCopyView', '#accordionCopyView')
 
 });

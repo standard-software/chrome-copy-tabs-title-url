@@ -30,6 +30,12 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 
 ## Version
 
+### 0.4.0
+2022/04/06(Wed)
+- Unselect text
+- add feature
+  - Remove UserName From Title On GitHub Pull Request
+
 ### 0.3.1
 2022/04/02(Sat)
 - Unselect text
