@@ -1,25 +1,40 @@
 # <img src="./copy-tabs-title-url/icon/icon128x128.png" width="40px" style="vertical-align:middle; margin-right:10px;">Chrome Extention: Copy Tabs Title Url
 
-## Screenshot
-
-menu expand
-![menu_expand](./image/menu_1.png)
-
-menu collapse Copy View
-![menu](./image/menu_2.png)
-
-menu collapse Setting
-![menu](./image/menu_3.png)
+## Chrome Web Store
+Copy Tabs Title URL - Chrome Web Store  
+https://chrome.google.com/webstore/detail/copy-tabs-title-url/lcfoefigmljgmbolbodknedngjcgelng
 
 ## GitHub
 
-standard-software/chrome-copy-tabs-title-url
+standard-software/chrome-copy-tabs-title-url  
 https://github.com/standard-software/chrome-copy-tabs-title-url
+
+## Screenshot
+
+menu expand  
+![menu_expand](./image/menu_1.png)
+
+menu collapse Copy View  
+![menu](./image/menu_2.png)
+
+menu collapse Setting  
+![menu](./image/menu_3.png)
+
+## Feature
+
+Copy the title and URL from a Chrome tabs.
+
+- Short Amazon URL
+- No Encode Japanese URL
+- Delete Parameter From URL
+- Remove Bracketed (---) From Title 
+- Remove Answer's Name From Title On Quora (English and Japanese)
+- Remove UserName From Title On GitHub Pull Request
 
 ## How to Install for developer
 
-- git clone
-  > git clone https://github.com/standard-software/chrome-copy-tabs-title-url.git
+- git clone  
+  \> git clone https://github.com/standard-software/chrome-copy-tabs-title-url.git
 
 - chrome browser: open chrome extension page
 - chrome browser: extension page: developer mode on
