@@ -1,6 +1,7 @@
 # <img src="./copy-tabs-title-url/icon/icon128x128.png" width="40px" style="vertical-align:middle; margin-right:10px;">Chrome Extention: Copy Tabs Title Url
 
 ## Chrome Web Store
+
 Copy Tabs Title URL - Chrome Web Store  
 https://chrome.google.com/webstore/detail/copy-tabs-title-url/lcfoefigmljgmbolbodknedngjcgelng
 
@@ -44,6 +45,16 @@ Copy the title and URL from a Chrome tabs.
 - chrome browser: add extension icon copy-tabs-title-url
 
 ## Version
+
+### 1.0.0
+2022/04/09(Sat)
+- Fix only amazon.co.jp >> only amazon.com & amazon.co.jp
+- update Remove Bracketed (---) From Title
+  - Only Remove First but Remove All
+- Change wording Menu Item
+- add Replace Space Zenkaku to Hankaku From Title(Japanese)
+- Fix No Encode Japanese
+  - include space remain %20
 
 ### 0.4.0
 2022/04/06(Wed)

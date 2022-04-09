@@ -1,6 +1,6 @@
 {
   "name": "Copy Tabs Title URL",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Copy the title and URL from a Chrome tabs",
   "icons": {
     "16": "icon/icon16x16.png",

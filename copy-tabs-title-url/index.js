@@ -5,6 +5,7 @@ const state = {
   noEncodeJapaneseURL: true,
   deleteURLParameter: false,
   deleteTitleStartBracket: true,
+  replaceTitleSpaceZenToHan: true,
   deleteTitleQuoraAnserName: true,
   deleteTitleNameGitHubPullRequest: true,
   expandCopyView: true,
@@ -108,25 +109,44 @@ const _removeTagInnerFirst = (str, startTag, endTag) => {
   return _deleteIndex(str, indexStartTag + startTag.length, indexEndTag + - 1);
 };
 
-const urlShortAmazon = rawUrl => {
-  const AMAZON_HOST = "www.amazon.co.jp";
-  const url = new URL(rawUrl);
-  if (url.host == AMAZON_HOST && url.pathname.includes('/dp/')) {
-    let itemId = _subLastDelimFirst(url.pathname, '/dp/');
-    if (itemId.includes('/')) {
-      itemId = _subFirstDelimFirst(itemId, '/');
+const _removeTagOuterAll = (str, startTag, endTag) => {
+  let before = str;
+  while (true) {
+    let result = _removeTagInnerFirst(before, startTag, endTag);
+    result = result.replace(startTag+endTag, '');
+    console.log(before, result);
+    if (before === result) {
+      return result;
     }
-    newUrl = `${url.origin}/dp/${itemId}/`
-    return newUrl;
-  } else {
+    before = result;
+  }
+}
+
+const urlShortAmazon = rawUrl => {
+  const _urlShortAmazon = (amazonUrl, rawUrl) => {
+    const url = new URL(rawUrl);
+    if (url.host == amazonUrl && url.pathname.includes('/dp/')) {
+      let itemId = _subLastDelimFirst(url.pathname, '/dp/');
+      if (itemId.includes('/')) {
+        itemId = _subFirstDelimFirst(itemId, '/');
+      }
+      newUrl = `${url.origin}/dp/${itemId}/`
+      return newUrl;
+    }
     return rawUrl;
   }
+
+  let result = rawUrl;
+  result = _urlShortAmazon('www.amazon.com', result);
+  result = _urlShortAmazon('www.amazon.co.jp', result);
+  return result;
 }
 
 const urlNoEncodeJapanese = url => {
   let result = url;
   try {
     result = decodeURI(url);
+    result = result.replaceAll(' ', '%20');
   } catch (e) {
   }
   return result;
@@ -139,28 +159,13 @@ const urlDeleteParameter = rawUrl => {
 }
 
 const titleDeleteStartBracket = title => {
-  const excludeBracket = (start, end) => {
-    const indexStartbracket = _indexOfFirst(title, start);
-    const indexEndbracket = _indexOfFirst(title, end);
-
-    if (indexStartbracket === -1 || indexEndbracket === -1) {
-      return title;
-    }
-    if (indexEndbracket < indexStartbracket) {
-      return title;
-    }
-
-    let result = _subFirstDelimFirst(title, start);
-    result += _subLastDelimFirst(title, end);
-    return result;
-  }
-
-  let result  = excludeBracket('(', ') ');
-  if (result !== title) {
-    return result;
-  }
-  result = excludeBracket('(', ')');
+  let result = _removeTagOuterAll(title, '(', ') ');
+  result = _removeTagOuterAll(result, '(', ')');
   return result;
+}
+
+const titleReplaceSpaceZenToHan = title => {
+  return title.replaceAll('　', ' ');
 }
 
 const formatURL = (url, state) => {
@@ -173,6 +178,9 @@ const formatURL = (url, state) => {
 const formatTitleURL = ({title, url, state}) => {
   if (state.deleteTitleStartBracket) {
     title = titleDeleteStartBracket(title);
+  }
+  if (state.replaceTitleSpaceZenToHan) {
+    title = titleReplaceSpaceZenToHan(title);
   }
   if (state.deleteTitleQuoraAnserName) {
     title = _removeTagInnerFirst(title, 'に対する', '回答');
@@ -271,6 +279,9 @@ const onClickCheckboxURLDeleteParameter = e => {
 const onClickCheckboxTitleDeleteStartBracket = e => {
   setStorageParameter('deleteTitleStartBracket', e.srcElement.checked);
 }
+const onClickCheckboxTitleReplaceSpaceZenToHan = e => {
+  setStorageParameter('replaceTitleSpaceZenToHan', e.srcElement.checked);
+}
 const onClickCheckboxTitleDeleteQuoraAnswerName = e => {
   setStorageParameter('deleteTitleQuoraAnserName', e.srcElement.checked);
 }
@@ -283,7 +294,7 @@ const onClickAccordionCopyView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copyView").placeholder =
-    "Copy Tabs Title URL\nver 0.4.0\n\n" +
+    "Copy Tabs Title URL\nver 1.0.0\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
@@ -300,6 +311,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", onClickCheckboxURLDeleteParameter);
   document.querySelector("#checkboxTitleDeleteStartBracket")
     .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
+  document.querySelector("#checkboxTitleReplaceSpaceZenToHan")
+    .addEventListener("click", onClickCheckboxTitleReplaceSpaceZenToHan);
   document.querySelector("#checkboxTitleDeleteQuoraAnswerName")
     .addEventListener("click", onClickCheckboxTitleDeleteQuoraAnswerName);
   document.querySelector("#checkboxTitleDeleteNameGitHubPullRequest")
@@ -326,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   getStorageParameter('noEncodeJapaneseURL', '#checkboxInputURLNoEncodeJapanese')
   getStorageParameter('deleteURLParameter', '#checkboxInputURLDeleteParameter')
   getStorageParameter('deleteTitleStartBracket', '#checkboxInputTitleDeleteStartBracket')
+  getStorageParameter('replaceTitleSpaceZenToHan', '#checkboxInputTitleReplaceSpaceZenToHan')
   getStorageParameter('deleteTitleQuoraAnserName', '#checkboxInputTitleDeleteQuoraAnswerName')
   getStorageParameter('deleteTitleNameGitHubPullRequest', '#checkboxInputTitleDeleteNameGitHubPullRequest')
   getStorageParameter('expandCopyView', '#accordionCopyView')

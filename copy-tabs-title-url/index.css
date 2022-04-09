@@ -42,7 +42,7 @@ li:hover {
 .checkboxs label {
   display: inline-flex;
   width: 100%;
-  height: 32px;
+  height: 36px;
   align-items: center;
   user-select: none;
 }
@@ -107,7 +107,7 @@ li:hover {
   line-height: 1.6;
   position: relative;
   margin: 0 0 0 0;
-  height: 32px;
+  height: 24px;
   padding-left: 25px;
   cursor: pointer;
   border-bottom: 1px solid #1b2538;
@@ -161,7 +161,7 @@ li:hover {
 
 .copy-view-textarea {
   width: 100%;
-  height: 130px;
+  height: 100px;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 5px;
