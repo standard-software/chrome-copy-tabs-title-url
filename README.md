@@ -25,10 +25,11 @@ menu collapse Setting
 
 Copy the title and URL from a Chrome tabs.
 
-- Short Amazon URL
+- Short Amazon URL (.com and .co.jp)
+- Delete Parameter after ? From URL
 - No Encode Japanese URL
-- Delete Parameter From URL
 - Remove Bracketed (---) From Title 
+- Replace Space Zenkaku to Hankaku From Title (Japanese Space Char type)
 - Remove Answer's Name From Title On Quora (English and Japanese)
 - Remove UserName From Title On GitHub Pull Request
 
