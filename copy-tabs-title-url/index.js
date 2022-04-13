@@ -1,4 +1,3 @@
-
 const state = {
   expandSetting: true,
   shortAmazonURL: true,
@@ -294,7 +293,7 @@ const onClickAccordionCopyView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copyView").placeholder =
-    "Copy Tabs Title URL\nver 1.0.0\n\n" +
+    "Copy Tabs Title URL\nver 1.0.1\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {

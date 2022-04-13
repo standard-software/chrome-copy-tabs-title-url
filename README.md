@@ -46,6 +46,10 @@ Copy the title and URL from a Chrome tabs.
 
 ## Version
 
+### 1.0.1
+2022/04/14(Thu)
+- Remove tabs permissions from manifest.json
+
 ### 1.0.0
 2022/04/09(Sat)
 - Fix only amazon.co.jp >> only amazon.com & amazon.co.jp
