@@ -47,6 +47,11 @@ Copy the title and URL from a Chrome tabs.
 
 ## Version
 
+### 1.0.2
+2022/04/15(Fri)
+- return tabs permissions from manifest.json
+  - Removing tab does not work.
+
 ### 1.0.1
 2022/04/14(Thu)
 - Remove tabs permissions from manifest.json
