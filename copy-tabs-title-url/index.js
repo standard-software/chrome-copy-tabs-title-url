@@ -238,6 +238,14 @@ const onClickMenuItem = function(evt) {
           }
         }
 
+        if (pasteUrls === '') {
+          if (state.expandCopyView === true) {
+            document.querySelector("#copyView")
+              .textContent = `no urls in clipboard text.`;
+          }
+          return;
+        }
+
         if (state.expandCopyView === true) {
           const copyViewArea = document.querySelector("#copyView");
           copyViewArea.textContent = `${pasteUrls}\npasted.`;
