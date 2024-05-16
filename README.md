@@ -51,6 +51,8 @@ Copy the title and URL from a Chrome tabs.
 2024/05/16 Thu
 - Some of the items in setting were moved to select option.
 - menu names to be more readable.
+- Add function
+  - Paste URLs and Open New Tabs
 
 ### 1.0.2
 2022/04/15(Fri)

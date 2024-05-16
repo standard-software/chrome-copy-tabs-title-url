@@ -12,7 +12,8 @@
   },
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "clipboardRead"
   ],
 
   "author": {

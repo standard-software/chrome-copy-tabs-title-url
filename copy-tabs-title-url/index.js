@@ -15,12 +15,21 @@ const state = {
 
 const copyText = str => {
   // console.log('copyText', str);
-  var textArea = document.createElement("textarea");
-  document.body.appendChild(textArea);
-  textArea.value = str;
-  textArea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textArea);
+
+  // var textArea = document.createElement("textarea");
+  // document.body.appendChild(textArea);
+  // textArea.value = str;
+  // textArea.select();
+  // document.execCommand("copy");
+  // document.body.removeChild(textArea);
+
+  navigator.clipboard.writeText(str);
+}
+
+const pasteText = (callback) => {
+  navigator.clipboard.readText().then(
+    callback
+  );
 }
 
 const _indexOfFirst = (str, search, indexStart = 0) => {
@@ -198,11 +207,47 @@ const formatTitleURL = ({title, url, state}) => {
   return { title, url };
 }
 
-const copyTitleURL = menuItemId => {
-  // console.log('copyTitleURL', menuItemId);
-  chrome.tabs.query({ currentWindow: true, lastFocusedWindow: true, highlighted: true }, tabs => {
+const onClickMenuItem = function(evt) {
+  const menuItemId = this.id;
+  // console.log({menuItemId});
+
+  chrome.tabs.query({
+    currentWindow: true, lastFocusedWindow: true, highlighted: true
+  }, tabs => {
     let text = '';
     switch (menuItemId) {
+
+    case 'SelectTabs-PasteURLs': {
+      pasteText(text => {
+        // console.log({text});
+
+        const active = state.expandCopyView !== true;
+        let pasteUrls = '';
+        for (const line of text.split('\n')) {
+          const urlHttp = _subLastDelimFirst(line, 'http://');
+          if (urlHttp !== '') {
+            const url = 'http://' + urlHttp;
+            pasteUrls += url + '\n';
+            chrome.tabs.create({ url, active });
+          }
+          const urlHttps = _subLastDelimFirst(line, 'https://');
+          if (urlHttps !== '') {
+            const url = 'https://' + urlHttps;
+            pasteUrls += url + '\n';
+            chrome.tabs.create({ url, active });
+          }
+        }
+
+        if (state.expandCopyView === true) {
+          const copyViewArea = document.querySelector("#copyView");
+          copyViewArea.textContent = `${pasteUrls}\npasted.`;
+        } else {
+          window.close();
+        }
+      });
+
+      return;
+    } break;
 
     case 'SelectTabs-TitleURL': {
       // console.log('copyTitleURL SelectTabs-TitleURL', tabs)
@@ -244,12 +289,7 @@ const copyTitleURL = menuItemId => {
     }
 
   })
-}
 
-const onClickMenuItem = function(evt) {
-  const menuItemId = this.id;
-  // console.log({menuItemId})
-  copyTitleURL(menuItemId)
 }
 
 const setStorageParameter = (key, value, selector) => {
@@ -419,7 +459,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelector("#accordionCopyView")
     .addEventListener("click", onClickAccordionCopyView);
-
 
   getStorageParameter('expandSelectOption', '#accordionSelectOption')
   getStorageParameter('deleteURLParameter', '#checkboxURLDeleteParameter')

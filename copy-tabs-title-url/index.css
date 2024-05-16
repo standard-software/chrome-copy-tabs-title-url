@@ -29,8 +29,6 @@ li:hover {
 
 /* Checkbox */
 .checkboxs {
-  border-top: 1px solid #292A2D;
-  /* padding-top: 10px; */
   text-align: left;
   color: #ffffff;
   background-color: #292A2D;
@@ -89,9 +87,7 @@ li:hover {
   position: relative;
   overflow: hidden;
   width: 100%;
-  margin-bottom: 1px;
   user-select: none;
-  /* padding-bottom: 10px; */
 }
 
 .accordion > input {
@@ -107,9 +103,8 @@ li:hover {
   height: 24px;
   padding-left: 25px;
   cursor: pointer;
-  border-bottom: 1px solid #1b2538;
   color: #ffffff;
-  background-color: #292A2D;
+  background-color: #33353a;
 
   display: table-cell;
   vertical-align: middle;
