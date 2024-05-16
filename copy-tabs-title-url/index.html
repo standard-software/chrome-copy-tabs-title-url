@@ -52,64 +52,79 @@
 
     <div>
       <div class="accordion">
+        <input id="accordionSelectOption" type="checkbox">
+        <label for="accordionSelectOption" id="accordionSelectOption">
+          <div>
+            Select Option
+          </div>
+        </label>
+        <div class="accordion-content checkboxs">
+
+          <label for="checkboxURLDeleteParameter">
+            <input type="checkbox" id="checkboxURLDeleteParameter" >
+            <div style="font-size: 14px; ">
+              URL: Delete Parameter after[?]
+            </div>
+          </label>
+
+          <label for="checkboxTitleDeleteStartBracket">
+            <input type="checkbox" id="checkboxTitleDeleteStartBracket" >
+            <div style="font-size: 14px; ">
+              Title: Remove Bracketed (---)
+            </div>
+          </label>
+
+          <label for="checkboxTitleReplaceSpaceZenToHan">
+            <input type="checkbox" id="checkboxTitleReplaceSpaceZenToHan" >
+            <div style="font-size: 14px; ">
+              Title: Replace Space Zenkaku to Hankaku<br>
+              <div style="text-align: right; font-size: 11px; ">
+                (Japanese Space Char type)
+              </div>
+            </div>
+          </label>
+
+          <label for="checkboxTitleDeleteQuoraAnswerName">
+            <input type="checkbox" id="checkboxTitleDeleteQuoraAnswerName" >
+            <div style="font-size: 14px; ">
+              Title: Remove Answer's Name On Quora <br>
+              <div style="text-align: right; font-size: 11px; ">
+                (English and Japanese)
+              </div>
+            </div>
+          </label>
+
+          <label for="checkboxTitleDeleteNameGitHubPullRequest" style="margin-bottom: 10px;">
+            <input type="checkbox" id="checkboxTitleDeleteNameGitHubPullRequest" >
+            <div style="font-size: 14px; ">
+              Title: Remove UserName On GitHub PR
+            </div>
+          </label>
+
+        </div>
+      </div>
+
+      <div class="accordion">
         <input id="accordionSetting" type="checkbox">
         <label for="accordionSetting" id="accordionSetting">
           <div>
             Setting
           </div>
         </label>
-        <div class="checkboxs accordion-content">
+        <div class="accordion-content checkboxs">
 
-          <label id="checkboxURLShortAmazon">
-            <input type="checkbox" id="checkboxInputURLShortAmazon" >
+          <label for="checkboxURLShortAmazon">
+            <input type="checkbox" id="checkboxURLShortAmazon" >
             <div>
               Short Amazon URL<br>
               (.com and .co.jp)
             </div>
           </label>
 
-          <label id="checkboxURLDeleteParameter">
-            <input type="checkbox" id="checkboxInputURLDeleteParameter" >
-            <div>
-              Delete Parameter after ? From URL
-            </div>
-          </label>
-
-          <label id="checkboxURLNoEncodeJapanese">
-            <input type="checkbox" id="checkboxInputURLNoEncodeJapanese" >
+          <label for="checkboxURLNoEncodeJapanese">
+            <input type="checkbox" id="checkboxURLNoEncodeJapanese" >
             <div>
               No Encode Japanese URL
-            </div>
-          </label>
-
-          <label id="checkboxTitleDeleteStartBracket">
-            <input type="checkbox" id="checkboxInputTitleDeleteStartBracket" >
-            <div>
-              Remove Bracketed (---) From Title
-            </div>
-          </label>
-
-          <label id="checkboxTitleReplaceSpaceZenToHan">
-            <input type="checkbox" id="checkboxInputTitleReplaceSpaceZenToHan" >
-            <div>
-              Replace Space Zenkaku to Hankaku From Title<br>
-              (Japanese Space Char type)
-            </div>
-          </label>
-
-          <label id="checkboxTitleDeleteQuoraAnswerName">
-            <input type="checkbox" id="checkboxInputTitleDeleteQuoraAnswerName" >
-            <div>
-              Remove Answer's Name From Title<br>
-              On Quora (English and Japanese)
-            </div>
-          </label>
-
-          <label id="checkboxTitleDeleteNameGitHubPullRequest" style="margin-bottom: 10px;">
-            <input type="checkbox" id="checkboxInputTitleDeleteNameGitHubPullRequest" >
-            <div>
-              Remove UserName From Title<br>
-              On GitHub Pull Request
             </div>
           </label>
 
@@ -131,8 +146,6 @@
           ></textarea>
         </div>
       </div>
-
-
 
     </div>
 

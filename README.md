@@ -47,6 +47,11 @@ Copy the title and URL from a Chrome tabs.
 
 ## Version
 
+### 1.1.0
+2024/05/16 Thu
+- Some of the items in setting were moved to select option.
+- menu names to be more readable.
+
 ### 1.0.2
 2022/04/15(Fri)
 - return tabs permissions from manifest.json
