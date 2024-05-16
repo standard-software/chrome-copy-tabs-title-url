@@ -12,14 +12,17 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 
 ## Screenshot
 
-menu expand  
-![menu_expand](./image/menu_1.png)
+Copy Tabs Menu Items
+![menu1](./image/menu_1.png)
 
-menu collapse Copy View  
-![menu](./image/menu_2.png)
+Expand Copy View
+![menu2](./image/menu_2.png)
 
-menu collapse Setting  
-![menu](./image/menu_3.png)
+Expand Select Option
+![menu3](./image/menu_3.png)
+
+Expand Setting
+![menu3](./image/menu_4.png)
 
 ## Feature
 
