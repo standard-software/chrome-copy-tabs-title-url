@@ -9,28 +9,32 @@ const state = {
   expandSetting: false,
   shortAmazonURL: true,
   noEncodeJapaneseURL: true,
+  bracketEnccode: false,
 
   expandCopyView: true,
 }
 
-const copyText = str => {
-  // console.log('copyText', str);
+const isNumber = (value) => {
+  return (typeof value === 'number' && (isFinite(value)));
+};
 
-  // var textArea = document.createElement("textarea");
-  // document.body.appendChild(textArea);
-  // textArea.value = str;
-  // textArea.select();
-  // document.execCommand("copy");
-  // document.body.removeChild(textArea);
-
-  navigator.clipboard.writeText(str);
-}
-
-const pasteText = (callback) => {
-  navigator.clipboard.readText().then(
-    callback
-  );
-}
+const __max = (array) => {
+  if (array.length === 0) {
+    return null;
+  }
+  let result = array[0];
+  for (let i = 0, l = array.length; i < l; i += 1) {
+    if (!isNumber(array[i])) {
+      throw new TypeError(
+        '__max args(array) element is not number',
+      );
+    }
+    if (result < array[i]) {
+      result = array[i];
+    }
+  }
+  return result;
+};
 
 const _indexOfFirst = (str, search, indexStart = 0) => {
   if (search === '') {
@@ -40,7 +44,7 @@ const _indexOfFirst = (str, search, indexStart = 0) => {
 };
 
 const _indexOfLast = (
-  str, search, indexStart = _max([0, str.length - 1]),
+  str, search, indexStart = __max([0, str.length - 1]),
 ) => {
   if (search === '') {
     return -1;
@@ -60,6 +64,24 @@ const _subLength = (
   return str.substring(index, index + length);
 };
 
+const _subFirstDelimFirst = (str, delimiter) => {
+  const index = _indexOfFirst(str, delimiter);
+  if (index === -1) {
+    return '';
+  } else {
+    return _subIndex(str, 0, index - 1);
+  }
+};
+
+const _subFirstDelimLast = (str, delimiter) => {
+  const index = _indexOfLast(str, delimiter);
+  if (index === -1) {
+    return '';
+  } else {
+    return _subIndex(str, 0, index - 1);
+  }
+};
+
 const _subLastDelimFirst = (str, delimiter) => {
   const index = _indexOfFirst(str, delimiter);
   if (index === -1) {
@@ -69,12 +91,12 @@ const _subLastDelimFirst = (str, delimiter) => {
   }
 };
 
-const _subFirstDelimFirst = (str, delimiter) => {
-  const index = _indexOfFirst(str, delimiter);
+const _subLastDelimLast = (str, delimiter) => {
+  const index = _indexOfLast(str, delimiter);
   if (index === -1) {
     return '';
   } else {
-    return _subIndex(str, 0, index - 1);
+    return _subLength(str, index + delimiter.length);
   }
 };
 
@@ -133,6 +155,25 @@ const _removeTagOuterAll = (str, startTag, endTag) => {
   }
 }
 
+const copyText = str => {
+  // console.log('copyText', str);
+
+  // var textArea = document.createElement("textarea");
+  // document.body.appendChild(textArea);
+  // textArea.value = str;
+  // textArea.select();
+  // document.execCommand("copy");
+  // document.body.removeChild(textArea);
+
+  navigator.clipboard.writeText(str);
+};
+
+const pasteText = (callback) => {
+  navigator.clipboard.readText().then(
+    callback
+  );
+};
+
 const urlShortAmazon = rawUrl => {
   const _urlShortAmazon = (amazonUrl, rawUrl) => {
     const url = new URL(rawUrl);
@@ -161,6 +202,10 @@ const urlNoEncodeJapanese = url => {
   } catch (e) {
   }
   return result;
+}
+
+const urlBracketEncode = url => {
+  return url.replaceAll(`(`, `%28`).replaceAll(`)`, `%29`);
 }
 
 const urlDeleteParameter = rawUrl => {
@@ -192,6 +237,9 @@ const formatTitleURL = ({title, url, state}) => {
   }
   if (state.deleteTitleNameGitHubPullRequest) {
     title = _removeTagInnerFirst(title, 'by ', ' Pull Request').replace("by  ", '');
+    if (title.indexOf(' · ') !== -1) {
+      title = _subFirstDelimLast(title, ' · ');
+    }
   }
 
   if (state.deleteURLParameter) {
@@ -202,6 +250,9 @@ const formatTitleURL = ({title, url, state}) => {
   }
   if (state.noEncodeJapaneseURL) {
     url = urlNoEncodeJapanese(url);
+  }
+  if (state.bracketEncode) {
+    url = urlBracketEncode(url);
   }
 
   return { title, url };
@@ -223,19 +274,27 @@ const onClickMenuItem = function(evt) {
 
         const active = state.expandCopyView !== true;
         let pasteUrls = '';
+        const getUrl = (line, protocol, newProtocol = protocol) => {
+          const urlProtocolBracket = _subLastDelimFirst(line, `(${protocol}`);
+          if (urlProtocolBracket !== '') {
+            const url = `${newProtocol}${_subFirstDelimLast(urlProtocolBracket, ')')}`;
+            pasteUrls += url + '\n';
+            chrome.tabs.create({ url, active });
+            return;
+          }
+          const urlProtocol = _subLastDelimFirst(line, protocol);
+          if (urlProtocol !== '') {
+            const url = `${newProtocol}${urlProtocol}`;
+            pasteUrls += url + '\n';
+            chrome.tabs.create({ url, active });
+            return;
+          }
+        }
         for (const line of text.split('\n')) {
-          const urlHttp = _subLastDelimFirst(line, 'http://');
-          if (urlHttp !== '') {
-            const url = 'http://' + urlHttp;
-            pasteUrls += url + '\n';
-            chrome.tabs.create({ url, active });
-          }
-          const urlHttps = _subLastDelimFirst(line, 'https://');
-          if (urlHttps !== '') {
-            const url = 'https://' + urlHttps;
-            pasteUrls += url + '\n';
-            chrome.tabs.create({ url, active });
-          }
+          getUrl(line, 'http://');
+          getUrl(line, 'https://');
+          getUrl(line, 'chrome://');
+          getUrl(line, 'edge://', 'chrome://');
         }
 
         if (pasteUrls === '') {
@@ -427,6 +486,15 @@ const onClickCheckboxURLNoEncodeJapanese = e => {
   );
 }
 
+const onClickCheckboxURLBracketEncode = e => {
+  const { checked } = e.target;
+  setStorageParameter(
+    'bracketEncode',
+    checked,
+    '#checkboxURLBracketEncode'
+  );
+}
+
 const onClickAccordionCopyView = e => {
   const { checked } = e.target;
   setStorageParameter(
@@ -438,7 +506,7 @@ const onClickAccordionCopyView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#copyView").placeholder =
-    "Copy Tabs Title URL\nver 1.1.0\n\n" +
+    "Copy Tabs Title URL\nver 1.2.0 β\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
@@ -464,6 +532,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", onClickCheckboxURLShortAmazon);
   document.querySelector("#checkboxURLNoEncodeJapanese")
     .addEventListener("click", onClickCheckboxURLNoEncodeJapanese);
+  document.querySelector("#checkboxURLBracketEncode")
+    .addEventListener("click", onClickCheckboxURLBracketEncode);
 
   document.querySelector("#accordionCopyView")
     .addEventListener("click", onClickAccordionCopyView);
@@ -478,6 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
   getStorageParameter('expandSetting', '#accordionSetting')
   getStorageParameter('shortAmazonURL', '#checkboxURLShortAmazon')
   getStorageParameter('noEncodeJapaneseURL', '#checkboxURLNoEncodeJapanese')
+  getStorageParameter('bracketEncode', '#checkboxURLBracketEncode')
 
   getStorageParameter('expandCopyView', '#accordionCopyView')
 

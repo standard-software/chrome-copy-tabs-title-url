@@ -45,6 +45,7 @@ Copy the title and URL from a Chrome tabs.
 ### Setting
 - URL: Short Amazon (.com and .co.jp)
 - URL: No Encode Japanese
+- URL: Blacket () -> %28 %29
 
 ## How to Install for developer
 
@@ -59,6 +60,11 @@ Copy the title and URL from a Chrome tabs.
 - chrome browser: add extension icon copy-tabs-title-url
 
 ## Version
+
+### 1.2.0β
+2024/05/17 Fri
+- Add Setting
+  - URL: Blacket () -> %28 %29
 
 ### 1.1.0
 2024/05/16 Thu
