@@ -28,13 +28,23 @@ Expand Setting
 
 Copy the title and URL from a Chrome tabs.
 
-- Short Amazon URL (.com and .co.jp)
-- Delete Parameter after ? From URL
-- No Encode Japanese URL
-- Remove Bracketed (---) From Title 
-- Replace Space Zenkaku to Hankaku From Title (Japanese Space Char type)
-- Remove Answer's Name From Title On Quora (English and Japanese)
-- Remove UserName From Title On GitHub Pull Request
+### Menu Item
+- Title \n URL
+- Markdown Style [Title](URL)
+- Title
+- URL
+- Paste URLs and Open New Tabs
+
+### Select Option
+- URL: Delete Parameter after[?]
+- Title: Remove Bracketed (---)
+- Title: Replace Space Zenkaku to Hankaku (Japanese Space Char type)
+- Title: Remove Answer's On Quora (English and Japanese)
+- Title: Remove User Org On GitHub PR
+
+### Setting
+- URL: Short Amazon (.com and .co.jp)
+- URL: No Encode Japanese
 
 ## How to Install for developer
 
