@@ -1,17 +1,17 @@
 const state = {
-  expandCopyOption1: true,
-  deleteURLParameter: false,
-  deleteTitleStartBracket: true,
-  replaceTitleSpaceZenToHan: true,
-  deleteTitleQuoraAnserName: true,
-  deleteTitleNameGitHubPullRequest: true,
+  expandCopyOption1:          false,
+  titleDeleteBrackets:        false,
+  titleReplaceSpaceZenToHan:  false,
+  titleAfterDelim:            false,
+  urlDeleteParameter:         false,
 
-  expandCopyOption2: false,
-  shortAmazonURL: true,
-  noEncodeJapaneseURL: true,
-  bracketEncode: false,
+  expandCopyOption2:          false,
+  titleDeleteUserGitHubPr:    true,
+  titleDeleteQuoraAnswer:     true,
+  urlShortAmazon:             true,
+  urlNoEncodeJapanese:        true,
 
-  expandCopyView: true,
+  expandCopyView:             false,
 }
 
 const isNumber = (value) => {
@@ -204,9 +204,9 @@ const urlNoEncodeJapanese = url => {
   return result;
 }
 
-const urlBracketEncode = url => {
-  return url.replaceAll(`(`, `%28`).replaceAll(`)`, `%29`);
-}
+// const urlBracketEncode = url => {
+//   return url.replaceAll(`(`, `%28`).replaceAll(`)`, `%29`);
+// }
 
 const urlDeleteParameter = rawUrl => {
   const url = new URL(rawUrl);
@@ -214,7 +214,7 @@ const urlDeleteParameter = rawUrl => {
   return newUrl;
 }
 
-const titleDeleteStartBracket = title => {
+const titleDeleteBrackets = title => {
   let result = _removeTagOuterAll(title, '(', ') ');
   result = _removeTagOuterAll(result, '(', ')');
   return result;
@@ -225,34 +225,34 @@ const titleReplaceSpaceZenToHan = title => {
 }
 
 const formatTitleURL = ({title, url, state}) => {
-  if (state.deleteTitleStartBracket) {
-    title = titleDeleteStartBracket(title);
+  if (state.titleDeleteBrackets) {
+    title = titleDeleteBrackets(title);
   }
-  if (state.replaceTitleSpaceZenToHan) {
+  if (state.titleReplaceSpaceZenToHan) {
     title = titleReplaceSpaceZenToHan(title);
   }
-  if (state.deleteTitleQuoraAnserName) {
+  if (state.titleDeleteQuoraAnswer) {
     title = _removeTagInnerFirst(title, 'に対する', '回答');
     title = _removeTagInnerFirst(title, '', "'s answer to").replace("'s a", 'A');
   }
-  if (state.deleteTitleNameGitHubPullRequest) {
+  if (state.titleDeleteUserGitHubPr) {
     title = _removeTagInnerFirst(title, 'by ', ' Pull Request').replace("by  ", '');
     if (title.indexOf(' · ') !== -1) {
       title = _subFirstDelimLast(title, ' · ');
     }
   }
 
-  if (state.deleteURLParameter) {
+  if (state.urlDeleteParameter) {
     url = urlDeleteParameter(url);
   }
-  if (state.shortAmazonURL) {
+  if (state.urlShortAmazon) {
     url = urlShortAmazon(url);
   }
-  if (state.noEncodeJapaneseURL) {
+  if (state.urlNoEncodeJapanese) {
     url = urlNoEncodeJapanese(url);
   }
-  if (state.bracketEncode) {
-    url = urlBracketEncode(url);
+  if (state.titleAfterDelim) {
+    // url = urlBracketEncode(url);
   }
 
   return { title, url };
@@ -359,7 +359,7 @@ const onClickMenuItem = function(evt) {
 
 }
 
-const setStorageParameter = (key, value, selector) => {
+const setStorageParam = (key, value, selector) => {
   document.querySelector(selector).checked = value;
 
   state[key] = value;
@@ -367,7 +367,7 @@ const setStorageParameter = (key, value, selector) => {
   // console.log({key, value});
 }
 
-const getStorageParameter = (key, selector) => {
+const getStorageParam = (key, selector) => {
   chrome.storage.local.get(key, ({[key]: result}) => {
     if (result === true) {
       state[key] = true;
@@ -384,20 +384,20 @@ const onClickAccordionCopyOption1 = e => {
   const { checked } = e.target;
   e.target.checked = !checked;
   if (checked && state.expandCopyOption2) {
-    setStorageParameter(
+    setStorageParam(
       'expandCopyOption2',
       false,
       '#accordionCopyOption2'
     );
     setTimeout(() => {
-      setStorageParameter(
+      setStorageParam(
         'expandCopyOption1',
         true,
         '#accordionCopyOption1'
       );
     }, 500)
   } else {
-    setStorageParameter(
+    setStorageParam(
       'expandCopyOption1',
       checked,
       '#accordionCopyOption1'
@@ -406,42 +406,42 @@ const onClickAccordionCopyOption1 = e => {
 }
 const onClickcheckboxUrlDeleteParameter = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'deleteURLParameter',
+  setStorageParam(
+    'urlDeleteParameter',
     checked,
-    '#checkboxUrlDeleteParameter'
+    '#chkUrlDeleteParameter'
   );
 }
-const onClickCheckboxTitleDeleteStartBracket = e => {
+const onClickCheckboxTitleDeleteBrackets = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'deleteTitleStartBracket',
+  setStorageParam(
+    'titleDeleteBrackets',
     checked,
-    '#checkboxTitleDeleteStartBracket'
+    '#chkTitleDeleteBrackets'
   );
 }
 const onClickCheckboxTitleReplaceSpaceZenToHan = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'replaceTitleSpaceZenToHan',
+  setStorageParam(
+    'titleReplaceSpaceZenToHan',
     checked,
-    '#checkboxTitleReplaceSpaceZenToHan'
+    '#chkTitleReplaceSpaceZenToHan'
   );
 }
-const onClickCheckboxTitleDeleteQuoraAnswerName = e => {
+const onClickCheckboxTitleDeleteQuoraAnswer = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'deleteTitleQuoraAnserName',
+  setStorageParam(
+    'titleDeleteQuoraAnswer',
     checked,
-    '#checkboxTitleDeleteQuoraAnswerName'
+    '#chkTitleDeleteQuoraAnswer'
   );
 }
-const onClickCheckboxTitleDeleteNameGitHubPullRequest = e => {
+const onClickCheckboxTitleDeleteUserGitHubPr = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'deleteTitleNameGitHubPullRequest',
+  setStorageParam(
+    'titleDeleteUserGitHubPr',
     checked,
-    '#checkboxTitleDeleteNameGitHubPullRequest'
+    '#chkTitleDeleteUserGitHubPr'
   );
 }
 
@@ -449,20 +449,20 @@ const onClickAccordionCopyOption2 = e => {
   const { checked } = e.target;
   e.target.checked = !checked;
   if (checked && state.expandCopyOption1) {
-    setStorageParameter(
+    setStorageParam(
       'expandCopyOption1',
       false,
       '#accordionCopyOption1'
     );
     setTimeout(() => {
-      setStorageParameter(
+      setStorageParam(
         'expandCopyOption2',
         true,
         '#accordionCopyOption2'
       );
     }, 500)
   } else {
-    setStorageParameter(
+    setStorageParam(
       'expandCopyOption2',
       checked,
       '#accordionCopyOption2'
@@ -471,33 +471,33 @@ const onClickAccordionCopyOption2 = e => {
 }
 const onClickcheckboxUrlShortAmazon = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'shortAmazonURL',
+  setStorageParam(
+    'urlShortAmazon',
     checked,
-    '#checkboxUrlShortAmazon'
+    '#chkUrlShortAmazon'
   );
 }
 const onClickcheckboxUrlNoEncodeJapanese = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'noEncodeJapaneseURL',
+  setStorageParam(
+    'urlNoEncodeJapanese',
     checked,
-    '#checkboxUrlNoEncodeJapanese'
+    '#chkUrlNoEncodeJapanese'
   );
 }
 
 const onClickcheckboxTitleAfterDelim = e => {
   const { checked } = e.target;
-  setStorageParameter(
-    'bracketEncode',
+  setStorageParam(
+    'titleAfterDelim',
     checked,
-    '#checkboxTitleAfterDelim'
+    '#chkTitleAfterDelim'
   );
 }
 
 const onClickAccordionCopyView = e => {
   const { checked } = e.target;
-  setStorageParameter(
+  setStorageParam(
     'expandCopyView',
     checked,
     '#accordionCopyView'
@@ -513,43 +513,35 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", onClickMenuItem);
   });
 
-  document.querySelector("#accordionCopyOption1")
-    .addEventListener("click", onClickAccordionCopyOption1);
-  document.querySelector("#checkboxTitleDeleteStartBracket")
-  .addEventListener("click", onClickCheckboxTitleDeleteStartBracket);
-  document.querySelector("#checkboxTitleReplaceSpaceZenToHan")
-  .addEventListener("click", onClickCheckboxTitleReplaceSpaceZenToHan);
-  document.querySelector("#checkboxTitleAfterDelim")
-  .addEventListener("click", onClickcheckboxTitleAfterDelim);
-  document.querySelector("#checkboxUrlDeleteParameter")
-  .addEventListener("click", onClickcheckboxUrlDeleteParameter);
+  const addEventClick = (selector, fn) => {
+    document.querySelector(selector).addEventListener(`click`, fn);
+  };
+  addEventClick("#accordionCopyOption1",          onClickAccordionCopyOption1);
+  addEventClick("#chkTitleDeleteBrackets",    onClickCheckboxTitleDeleteBrackets);
+  addEventClick("#chkTitleReplaceSpaceZenToHan",  onClickCheckboxTitleReplaceSpaceZenToHan);
+  addEventClick("#chkTitleAfterDelim",            onClickcheckboxTitleAfterDelim);
+  addEventClick("#chkUrlDeleteParameter",         onClickcheckboxUrlDeleteParameter);
 
-  document.querySelector("#accordionCopyOption2")
-  .addEventListener("click", onClickAccordionCopyOption2);
-  document.querySelector("#checkboxTitleDeleteNameGitHubPullRequest")
-  .addEventListener("click", onClickCheckboxTitleDeleteNameGitHubPullRequest);
-  document.querySelector("#checkboxTitleDeleteQuoraAnswerName")
-  .addEventListener("click", onClickCheckboxTitleDeleteQuoraAnswerName);
-  document.querySelector("#checkboxUrlShortAmazon")
-    .addEventListener("click", onClickcheckboxUrlShortAmazon);
-  document.querySelector("#checkboxUrlNoEncodeJapanese")
-    .addEventListener("click", onClickcheckboxUrlNoEncodeJapanese);
+  addEventClick("#accordionCopyOption2",          onClickAccordionCopyOption2);
+  addEventClick("#chkTitleDeleteUserGitHubPr",    onClickCheckboxTitleDeleteUserGitHubPr);
+  addEventClick("#chkTitleDeleteQuoraAnswer",     onClickCheckboxTitleDeleteQuoraAnswer);
+  addEventClick("#chkUrlShortAmazon",             onClickcheckboxUrlShortAmazon);
+  addEventClick("#chkUrlNoEncodeJapanese",        onClickcheckboxUrlNoEncodeJapanese);
 
-  document.querySelector("#accordionCopyView")
-    .addEventListener("click", onClickAccordionCopyView);
+  addEventClick("#accordionCopyView",             onClickAccordionCopyView);
 
-  getStorageParameter('expandCopyOption1', '#accordionCopyOption1')
-  getStorageParameter('deleteTitleStartBracket', '#checkboxTitleDeleteStartBracket')
-  getStorageParameter('replaceTitleSpaceZenToHan', '#checkboxTitleReplaceSpaceZenToHan')
-  getStorageParameter('bracketEncode', '#checkboxTitleAfterDelim')
-  getStorageParameter('deleteURLParameter', '#checkboxUrlDeleteParameter')
+  getStorageParam('expandCopyOption1',          '#accordionCopyOption1');
+  getStorageParam('titleDeleteBrackets',    '#chkTitleDeleteBrackets');
+  getStorageParam('titleReplaceSpaceZenToHan',  '#chkTitleReplaceSpaceZenToHan');
+  getStorageParam('titleAfterDelim',            '#chkTitleAfterDelim');
+  getStorageParam('urlDeleteParameter',         '#chkUrlDeleteParameter');
 
-  getStorageParameter('expandCopyOption2', '#accordionCopyOption2')
-  getStorageParameter('deleteTitleNameGitHubPullRequest', '#checkboxTitleDeleteNameGitHubPullRequest')
-  getStorageParameter('deleteTitleQuoraAnserName', '#checkboxTitleDeleteQuoraAnswerName')
-  getStorageParameter('shortAmazonURL', '#checkboxUrlShortAmazon')
-  getStorageParameter('noEncodeJapaneseURL', '#checkboxUrlNoEncodeJapanese')
+  getStorageParam('expandCopyOption2',          '#accordionCopyOption2');
+  getStorageParam('titleDeleteUserGitHubPr',    '#chkTitleDeleteUserGitHubPr');
+  getStorageParam('titleDeleteQuoraAnswer',     '#chkTitleDeleteQuoraAnswer');
+  getStorageParam('urlShortAmazon',             '#chkUrlShortAmazon');
+  getStorageParam('urlNoEncodeJapanese',        '#chkUrlNoEncodeJapanese');
 
-  getStorageParameter('expandCopyView', '#accordionCopyView')
+  getStorageParam('expandCopyView',             '#accordionCopyView');
 
 });
