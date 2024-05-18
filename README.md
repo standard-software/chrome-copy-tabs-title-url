@@ -65,6 +65,7 @@ Copy the title and URL from a Chrome tabs.
 2024/05/17 Fri
 - Add Setting
   - URL: Blacket () -> %28 %29
+- update menu structure
 
 ### 1.1.0
 2024/05/16 Thu
