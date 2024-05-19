@@ -63,32 +63,19 @@ const urlNoEncodeJapanese = url => {
   return result;
 }
 
-// const urlBracketEncode = url => {
-//   return url.replaceAll(`(`, `%28`).replaceAll(`)`, `%29`);
-// }
-
 const urlDeleteParameter = rawUrl => {
   const url = new URL(rawUrl);
   const newUrl = url.origin + url.pathname;
   return newUrl;
 }
 
-const titleDeleteBrackets = title => {
-  let result = _removeTagOuterAll(title, '(', ') ');
-  result = _removeTagOuterAll(result, '(', ')');
-  return result;
-}
-
-const titleReplaceSpaceZenToHan = title => {
-  return title.replaceAll('　', ' ');
-}
-
 const formatTitleURL = ({title, url, state}) => {
   if (state.titleDeleteBrackets) {
-    title = titleDeleteBrackets(title);
+    title = _removeTagOuterAll(title, '(', ') ');
+    title = _removeTagOuterAll(title, '(', ')');
   }
   if (state.titleReplaceSpaceZenToHan) {
-    title = titleReplaceSpaceZenToHan(title);
+    title = title.replaceAll('　', ' ');
   }
   if (state.titleDeleteQuoraAnswer) {
     title = _removeTagInnerFirst(title, 'に対する', '回答');
@@ -96,10 +83,22 @@ const formatTitleURL = ({title, url, state}) => {
   }
   if (state.titleDeleteUserGitHubPr) {
     title = _removeTagInnerFirst(title, 'by ', ' Pull Request').replace("by  ", '');
+  }
+  if (state.titleAfterDelim) {
     if (title.indexOf(' · ') !== -1) {
       title = _subFirstDelimLast(title, ' · ');
     }
+    if (title.indexOf(' | ') !== -1) {
+      title = _subFirstDelimLast(title, ' | ');
+    }
+    if (title.indexOf(' - ') !== -1) {
+      title = _subFirstDelimLast(title, ' - ');
+    }
+    if (title.indexOf(' – ') !== -1) {
+      title = _subFirstDelimLast(title, ' – ');
+    }
   }
+  console.log(`98`, state.titleAfterDelim, title);
 
   if (state.urlDeleteParameter) {
     url = urlDeleteParameter(url);
@@ -109,9 +108,6 @@ const formatTitleURL = ({title, url, state}) => {
   }
   if (state.urlNoEncodeJapanese) {
     url = urlNoEncodeJapanese(url);
-  }
-  if (state.titleAfterDelim) {
-    // url = urlBracketEncode(url);
   }
 
   return { title, url };
@@ -263,7 +259,7 @@ const onClickAccordionCopyOption1 = e => {
     );
   }
 }
-const onClickcheckboxUrlDeleteParameter = e => {
+const onClickCheckboxUrlDeleteParameter = e => {
   const { checked } = e.target;
   setStorageParam(
     'urlDeleteParameter',
@@ -328,7 +324,7 @@ const onClickAccordionCopyOption2 = e => {
     );
   }
 }
-const onClickcheckboxUrlShortAmazon = e => {
+const onClickCheckboxUrlShortAmazon = e => {
   const { checked } = e.target;
   setStorageParam(
     'urlShortAmazon',
@@ -336,7 +332,7 @@ const onClickcheckboxUrlShortAmazon = e => {
     '#chkUrlShortAmazon'
   );
 }
-const onClickcheckboxUrlNoEncodeJapanese = e => {
+const onClickCheckboxUrlNoEncodeJapanese = e => {
   const { checked } = e.target;
   setStorageParam(
     'urlNoEncodeJapanese',
@@ -345,7 +341,7 @@ const onClickcheckboxUrlNoEncodeJapanese = e => {
   );
 }
 
-const onClickcheckboxTitleAfterDelim = e => {
+const onClickCheckboxTitleAfterDelim = e => {
   const { checked } = e.target;
   setStorageParam(
     'titleAfterDelim',
@@ -376,21 +372,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(selector).addEventListener(`click`, fn);
   };
   addEventClick("#accordionCopyOption1",          onClickAccordionCopyOption1);
-  addEventClick("#chkTitleDeleteBrackets",    onClickCheckboxTitleDeleteBrackets);
+  addEventClick("#chkTitleDeleteBrackets",        onClickCheckboxTitleDeleteBrackets);
   addEventClick("#chkTitleReplaceSpaceZenToHan",  onClickCheckboxTitleReplaceSpaceZenToHan);
-  addEventClick("#chkTitleAfterDelim",            onClickcheckboxTitleAfterDelim);
-  addEventClick("#chkUrlDeleteParameter",         onClickcheckboxUrlDeleteParameter);
+  addEventClick("#chkTitleAfterDelim",            onClickCheckboxTitleAfterDelim);
+  addEventClick("#chkUrlDeleteParameter",         onClickCheckboxUrlDeleteParameter);
 
   addEventClick("#accordionCopyOption2",          onClickAccordionCopyOption2);
   addEventClick("#chkTitleDeleteUserGitHubPr",    onClickCheckboxTitleDeleteUserGitHubPr);
   addEventClick("#chkTitleDeleteQuoraAnswer",     onClickCheckboxTitleDeleteQuoraAnswer);
-  addEventClick("#chkUrlShortAmazon",             onClickcheckboxUrlShortAmazon);
-  addEventClick("#chkUrlNoEncodeJapanese",        onClickcheckboxUrlNoEncodeJapanese);
+  addEventClick("#chkUrlShortAmazon",             onClickCheckboxUrlShortAmazon);
+  addEventClick("#chkUrlNoEncodeJapanese",        onClickCheckboxUrlNoEncodeJapanese);
 
   addEventClick("#accordionCopyView",             onClickAccordionCopyView);
 
   getStorageParam('expandCopyOption1',          '#accordionCopyOption1');
-  getStorageParam('titleDeleteBrackets',    '#chkTitleDeleteBrackets');
+  getStorageParam('titleDeleteBrackets',        '#chkTitleDeleteBrackets');
   getStorageParam('titleReplaceSpaceZenToHan',  '#chkTitleReplaceSpaceZenToHan');
   getStorageParam('titleAfterDelim',            '#chkTitleAfterDelim');
   getStorageParam('urlDeleteParameter',         '#chkUrlDeleteParameter');

@@ -66,6 +66,8 @@ Copy the title and URL from a Chrome tabs.
 - Add Setting
   - URL: Blacket () -> %28 %29
 - update menu structure
+- Add Function
+  - Title: Delete after delimiter
 
 ### 1.1.0
 2024/05/16 Thu
