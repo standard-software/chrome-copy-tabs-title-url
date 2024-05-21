@@ -1,28 +1,30 @@
-const state = {
-  expandCopyOption1:          false,
-  titleDeleteBrackets:        false,
-  titleReplaceSpaceZenToHan:  false,
-  titleAfterDelim:            false,
-  urlDeleteParameter:         false,
+const stateSettings = [
+  [`expandCopyOption1`,          false,   `#accordionCopyOption1`],
+  [`titleDeleteBrackets`,        false,   `#chkTitleDeleteBrackets`],
+  [`titleReplaceSpaceZenToHan`,  false,   `#chkTitleReplaceSpaceZenToHan`],
+  [`titleAfterDelim`,            false,   `#chkTitleAfterDelim`],
+  [`urlDeleteParameter`,         false,   `#chkUrlDeleteParameter`],
 
-  expandCopyOption2:          false,
-  titleDeleteUserGitHubPr:    true,
-  titleDeleteQuoraAnswer:     true,
-  urlShortAmazon:             true,
-  urlNoEncodeJapanese:        true,
+  [`expandCopyOption2`,          false,   `#accordionCopyOption2`],
+  [`titleDeleteUserGitHubPr`,    true,    `#chkTitleDeleteUserGitHubPr`],
+  [`titleDeleteQuoraAnswer`,     true,    `#chkTitleDeleteQuoraAnswer`],
+  [`urlShortAmazon`,             true,    `#chkUrlShortAmazon`],
+  [`urlNoEncodeJapanese`,        true,    `#chkUrlNoEncodeJapanese`],
 
-  expandCopyView:             false,
+  [`expandCopyView`,             false,   `#accordionCopyView`],
+];
+const state = {};
+const selector = {};
+const stateKeys = [];
+for (const setting of stateSettings) {
+  const [key, value, selectorValue] = setting;
+  state[key] = value;
+  selector[key] = selectorValue;
+  stateKeys.push(key);
 }
 
 const copyText = str => {
-  // console.log('copyText', str);
-
-  // var textArea = document.createElement("textarea");
-  // document.body.appendChild(textArea);
-  // textArea.value = str;
-  // textArea.select();
-  // document.execCommand("copy");
-  // document.body.removeChild(textArea);
+  // console.log(`copyText`, str);
 
   navigator.clipboard.writeText(str);
 };
@@ -222,19 +224,6 @@ const setStorageParam = (key, value, selector) => {
   // console.log({key, value});
 }
 
-const getStorageParam = (key, selector) => {
-  chrome.storage.local.get(key, ({[key]: result}) => {
-    if (result === true) {
-      state[key] = true;
-    } else if (result === false) {
-      state[key] = false;
-    }
-
-    document.querySelector(selector).checked = state[key];
-    // console.log('getStorageParameter', result, key, state[key]);
-  });
-};
-
 const onClickAccordionCopyOption1 = e => {
   const { checked } = e.target;
   e.target.checked = !checked;
@@ -385,18 +374,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addEventClick("#accordionCopyView",             onClickAccordionCopyView);
 
-  getStorageParam('expandCopyOption1',          '#accordionCopyOption1');
-  getStorageParam('titleDeleteBrackets',        '#chkTitleDeleteBrackets');
-  getStorageParam('titleReplaceSpaceZenToHan',  '#chkTitleReplaceSpaceZenToHan');
-  getStorageParam('titleAfterDelim',            '#chkTitleAfterDelim');
-  getStorageParam('urlDeleteParameter',         '#chkUrlDeleteParameter');
+  chrome.storage.local.get(stateKeys, (data) => {
+    const dataValues = Object.values(data);
+    if (dataValues.every(v => !isUndefined(v))) {
+      for (const key of Object.keys(data)) {
+        state[key] = data[key];
+        document.querySelector(selector[key]).checked = data[key];
+      }
+    }
+  })
 
-  getStorageParam('expandCopyOption2',          '#accordionCopyOption2');
-  getStorageParam('titleDeleteUserGitHubPr',    '#chkTitleDeleteUserGitHubPr');
-  getStorageParam('titleDeleteQuoraAnswer',     '#chkTitleDeleteQuoraAnswer');
-  getStorageParam('urlShortAmazon',             '#chkUrlShortAmazon');
-  getStorageParam('urlNoEncodeJapanese',        '#chkUrlNoEncodeJapanese');
-
-  getStorageParam('expandCopyView',             '#accordionCopyView');
 
 });

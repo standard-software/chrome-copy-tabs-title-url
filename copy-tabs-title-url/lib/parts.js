@@ -1,3 +1,6 @@
+const isUndefined = (value) => {
+  return typeof value === 'undefined';
+};
 
 const isNumber = (value) => {
   return (typeof value === 'number' && (isFinite(value)));
