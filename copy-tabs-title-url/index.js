@@ -323,9 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    console.log(`version up`, {data});
-
-    // version up
+    // state version up
     const verUpKeyTable = [
       [`expandSelectOption`,                `expandCopyOption1`],
       [`deleteURLParameter`,                `urlDeleteParameter`],
@@ -350,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data[oldKey] === true) {
           state[newKey] = true;
         } else if (data[oldKey] === false) {
-          state[newKey] = true;
+          state[newKey] = false;
         } else {
           continue;
         }
