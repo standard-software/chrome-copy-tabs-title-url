@@ -11,7 +11,7 @@ const stateSettings = [
   [`urlShortAmazon`,             true,    `#chkUrlShortAmazon`],
   [`urlNoEncodeJapanese`,        true,    `#chkUrlNoEncodeJapanese`],
 
-  [`expandCopyView`,             false,   `#accordionCopyView`],
+  [`expandInfoView`,             false,   `#accordionInfoView`],
 ];
 const state = {};
 const selector = {};
@@ -129,7 +129,7 @@ const onClickMenuItem = function(evt) {
       pasteText(text => {
         // console.log({text});
 
-        const active = state.expandCopyView !== true;
+        const active = state.expandInfoView !== true;
         let pasteUrls = '';
         const getUrl = (line, protocol, newProtocol = protocol) => {
           const urlProtocolBracket = _subLastDelimFirst(line, `(${protocol}`);
@@ -155,16 +155,16 @@ const onClickMenuItem = function(evt) {
         }
 
         if (pasteUrls === '') {
-          if (state.expandCopyView === true) {
-            document.querySelector("#copyView")
+          if (state.expandInfoView === true) {
+            document.querySelector("#infoView")
               .textContent = `no urls in clipboard text.`;
           }
           return;
         }
 
-        if (state.expandCopyView === true) {
-          const copyViewArea = document.querySelector("#copyView");
-          copyViewArea.textContent = `${pasteUrls}\npasted.`;
+        if (state.expandInfoView === true) {
+          document.querySelector("#infoView")
+            .textContent = `${pasteUrls}\npasted.`;
         } else {
           window.close();
         }
@@ -205,9 +205,9 @@ const onClickMenuItem = function(evt) {
     }
 
     copyText(text);
-    if (state.expandCopyView === true) {
-      const copyViewArea = document.querySelector("#copyView");
-      copyViewArea.textContent = `${text}\ncopied.`;
+    if (state.expandInfoView === true) {
+      document.querySelector("#infoView")
+        .textContent = `${text}\ncopied.`;
     } else {
       window.close();
     }
@@ -339,17 +339,17 @@ const onClickCheckboxTitleAfterDelim = e => {
   );
 }
 
-const onClickAccordionCopyView = e => {
+const onClickAccordionInfoView = e => {
   const { checked } = e.target;
   setStorageParam(
-    'expandCopyView',
+    'expandInfoView',
     checked,
-    '#accordionCopyView'
+    '#accordionInfoView'
   );
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("#copyView").placeholder =
+  document.querySelector("#infoView").placeholder =
     "Copy Tabs Title URL\nver 1.2.0 β\n\n" +
     "When copy view is expanded,\nmenu item click does not close."
 
@@ -372,10 +372,9 @@ document.addEventListener("DOMContentLoaded", () => {
   addEventClick("#chkUrlShortAmazon",             onClickCheckboxUrlShortAmazon);
   addEventClick("#chkUrlNoEncodeJapanese",        onClickCheckboxUrlNoEncodeJapanese);
 
-  addEventClick("#accordionCopyView",             onClickAccordionCopyView);
+  addEventClick("#accordionInfoView",             onClickAccordionInfoView);
 
   chrome.storage.local.get(stateKeys, (data) => {
-    console.log({data});
     if (stateKeys.every(key => !isUndefined(data[key]))) {
       for (const key of Object.keys(data)) {
         state[key] = data[key];
@@ -383,8 +382,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return;
     }
-
-    console.log(`version up`);
 
     // version up
     const verUpKeyTable = [
@@ -394,10 +391,12 @@ document.addEventListener("DOMContentLoaded", () => {
       [`replaceTitleSpaceZenToHan`,         `titleReplaceSpaceZenToHan`],
       [`deleteTitleQuoraAnserName`,         `titleDeleteQuoraAnswer`],
       [`deleteTitleNameGitHubPullRequest`,  `titleDeleteUserGitHubPr`],
+
       [`expandSetting`,                     `expandCopyOption2`],
       [`shortAmazonURL`,                    `urlShortAmazon`],
       [`noEncodeJapaneseURL`,               `urlNoEncodeJapanese`],
-      [`expandCopyView`,                    `expandCopyView`],
+
+      [`expandCopyView`,                    `expandInfoView`],
     ];
     const oldStateKeys = [];
     for (const [oldKey, _] of verUpKeyTable) {
@@ -405,7 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     chrome.storage.local.get(oldStateKeys, (data) => {
-      console.log({data});
       for (const [oldKey, newKey] of verUpKeyTable) {
         if (data[oldKey] === true) {
           state[newKey] = true;
