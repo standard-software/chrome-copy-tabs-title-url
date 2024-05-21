@@ -289,8 +289,8 @@ const onClickAccordionInfoView = e => {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#infoView").placeholder =
-    "Copy Tabs Title URL\nver 1.2.0 β\n\n" +
-    "When copy view is expanded,\nmenu item click does not close."
+    "Copy Tabs Title URL\nver 1.2.0\n\n" +
+    "When this view is expanded,\nmenu item click does not close."
 
   document.querySelectorAll(".copy-tabs-title-url_menu-item").forEach(el => {
     el.addEventListener("click", onClickMenuItem);

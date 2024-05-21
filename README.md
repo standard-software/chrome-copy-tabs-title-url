@@ -12,16 +12,16 @@ https://github.com/standard-software/chrome-copy-tabs-title-url
 
 ## Screenshot
 
-Copy Tabs Menu Items
+Menu Items
 ![menu1](./image/menu_1.png)
 
-Expand Copy View
+Copy Option 1
 ![menu2](./image/menu_2.png)
 
-Expand Select Option
+Copy Option 2
 ![menu3](./image/menu_3.png)
 
-Expand Setting
+Information View
 ![menu3](./image/menu_4.png)
 
 ## Feature
@@ -35,17 +35,17 @@ Copy the title and URL from a Chrome tabs.
 - URL
 - Paste URLs and Open New Tabs
 
-### Select Option
-- URL: Delete Parameter after[?]
+### Copy Option 1
 - Title: Remove Bracketed (---)
+- Title: Delete after delimiter [ -  ] [ · ] [ – ] [ | ]
 - Title: Replace Space Zenkaku to Hankaku (Japanese Space Char type)
-- Title: Remove Answer's On Quora (English and Japanese)
-- Title: Remove User Org On GitHub PR
+- URL: Delete Parameter after[?]
 
-### Setting
+### Copy Option 2
+- Title: Remove Username On GitHub PR
+- Title: Remove Answer's On Quora (English and Japanese)
 - URL: Short Amazon (.com and .co.jp)
 - URL: No Encode Japanese
-- URL: Blacket () -> %28 %29
 
 ## How to Install for developer
 
@@ -61,11 +61,10 @@ Copy the title and URL from a Chrome tabs.
 
 ## Version
 
-### 1.2.0β
-2024/05/17 Fri
-- Add Setting
-  - URL: Blacket () -> %28 %29
+### 1.2.0
+2024/05/21 Tue
 - update menu structure
+- update storege key
 - Add Function
   - Title: Delete after delimiter
 
