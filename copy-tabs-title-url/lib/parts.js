@@ -135,7 +135,6 @@ const _removeTagOuterAll = (str, startTag, endTag) => {
   while (true) {
     let result = _removeTagInnerFirst(before, startTag, endTag);
     result = result.replace(startTag+endTag, '');
-    console.log(before, result);
     if (before === result) {
       return result;
     }

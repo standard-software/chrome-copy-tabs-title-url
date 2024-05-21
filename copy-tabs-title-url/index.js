@@ -1,8 +1,8 @@
 const stateSettings = [
   [`expandCopyOption1`,          false,   `#accordionCopyOption1`],
   [`titleDeleteBrackets`,        false,   `#chkTitleDeleteBrackets`],
-  [`titleReplaceSpaceZenToHan`,  false,   `#chkTitleReplaceSpaceZenToHan`],
   [`titleAfterDelim`,            false,   `#chkTitleAfterDelim`],
+  [`titleReplaceSpaceZenToHan`,  false,   `#chkTitleReplaceSpaceZenToHan`],
   [`urlDeleteParameter`,         false,   `#chkUrlDeleteParameter`],
 
   [`expandCopyOption2`,          false,   `#accordionCopyOption2`],
@@ -100,7 +100,6 @@ const formatTitleURL = ({title, url, state}) => {
       title = _subFirstDelimLast(title, ' – ');
     }
   }
-  console.log(`98`, state.titleAfterDelim, title);
 
   if (state.urlDeleteParameter) {
     url = urlDeleteParameter(url);
