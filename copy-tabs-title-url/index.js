@@ -323,6 +323,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    console.log(`version up`, {data});
+
     // version up
     const verUpKeyTable = [
       [`expandSelectOption`,                `expandCopyOption1`],
