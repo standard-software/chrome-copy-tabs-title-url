@@ -375,13 +375,56 @@ document.addEventListener("DOMContentLoaded", () => {
   addEventClick("#accordionCopyView",             onClickAccordionCopyView);
 
   chrome.storage.local.get(stateKeys, (data) => {
-    const dataValues = Object.values(data);
-    if (dataValues.every(v => !isUndefined(v))) {
+    console.log({data});
+    if (stateKeys.every(key => !isUndefined(data[key]))) {
       for (const key of Object.keys(data)) {
         state[key] = data[key];
         document.querySelector(selector[key]).checked = data[key];
       }
+      return;
     }
+
+    console.log(`version up`);
+
+    // version up
+    const verUpKeyTable = [
+      [`expandSelectOption`,                `expandCopyOption1`],
+      [`deleteURLParameter`,                `urlDeleteParameter`],
+      [`deleteTitleStartBracket`,           `titleDeleteBrackets`],
+      [`replaceTitleSpaceZenToHan`,         `titleReplaceSpaceZenToHan`],
+      [`deleteTitleQuoraAnserName`,         `titleDeleteQuoraAnswer`],
+      [`deleteTitleNameGitHubPullRequest`,  `titleDeleteUserGitHubPr`],
+      [`expandSetting`,                     `expandCopyOption2`],
+      [`shortAmazonURL`,                    `urlShortAmazon`],
+      [`noEncodeJapaneseURL`,               `urlNoEncodeJapanese`],
+      [`expandCopyView`,                    `expandCopyView`],
+    ];
+    const oldStateKeys = [];
+    for (const [oldKey, _] of verUpKeyTable) {
+      oldStateKeys.push(oldKey);
+    }
+
+    chrome.storage.local.get(oldStateKeys, (data) => {
+      console.log({data});
+      for (const [oldKey, newKey] of verUpKeyTable) {
+        if (data[oldKey] === true) {
+          state[newKey] = true;
+        } else if (data[oldKey] === false) {
+          state[newKey] = true;
+        } else {
+          continue;
+        }
+      }
+
+      for (const key of stateKeys) {
+        document.querySelector(selector[key]).checked = state[key];
+      }
+
+      chrome.storage.local.clear(() => {
+        chrome.storage.local.set(state, () => {});
+      });
+
+    });
   })
 
 
