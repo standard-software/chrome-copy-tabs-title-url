@@ -216,8 +216,8 @@ const onClickMenuItem = function(evt) {
 
 }
 
-const setStorageParam = (key, value, selector) => {
-  document.querySelector(selector).checked = value;
+const setStorageParam = (key, value) => {
+  document.querySelector(selector[key]).checked = value;
 
   state[key] = value;
   chrome.storage.local.set({[key]: value}, () => {});
@@ -228,124 +228,64 @@ const onClickAccordionCopyOption1 = e => {
   const { checked } = e.target;
   e.target.checked = !checked;
   if (checked && state.expandCopyOption2) {
-    setStorageParam(
-      'expandCopyOption2',
-      false,
-      '#accordionCopyOption2'
-    );
+    setStorageParam('expandCopyOption2', false);
     setTimeout(() => {
-      setStorageParam(
-        'expandCopyOption1',
-        true,
-        '#accordionCopyOption1'
-      );
+      setStorageParam('expandCopyOption1', true);
     }, 500)
   } else {
-    setStorageParam(
-      'expandCopyOption1',
-      checked,
-      '#accordionCopyOption1'
-    );
+    setStorageParam('expandCopyOption1', checked);
   }
 }
 const onClickCheckboxUrlDeleteParameter = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'urlDeleteParameter',
-    checked,
-    '#chkUrlDeleteParameter'
-  );
+  setStorageParam('urlDeleteParameter', checked);
 }
 const onClickCheckboxTitleDeleteBrackets = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'titleDeleteBrackets',
-    checked,
-    '#chkTitleDeleteBrackets'
-  );
+  setStorageParam('titleDeleteBrackets', checked);
 }
 const onClickCheckboxTitleReplaceSpaceZenToHan = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'titleReplaceSpaceZenToHan',
-    checked,
-    '#chkTitleReplaceSpaceZenToHan'
-  );
+  setStorageParam('titleReplaceSpaceZenToHan', checked);
 }
 const onClickCheckboxTitleDeleteQuoraAnswer = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'titleDeleteQuoraAnswer',
-    checked,
-    '#chkTitleDeleteQuoraAnswer'
-  );
+  setStorageParam('titleDeleteQuoraAnswer', checked);
 }
 const onClickCheckboxTitleDeleteUserGitHubPr = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'titleDeleteUserGitHubPr',
-    checked,
-    '#chkTitleDeleteUserGitHubPr'
-  );
+  setStorageParam('titleDeleteUserGitHubPr', checked);
 }
 
 const onClickAccordionCopyOption2 = e => {
   const { checked } = e.target;
   e.target.checked = !checked;
   if (checked && state.expandCopyOption1) {
-    setStorageParam(
-      'expandCopyOption1',
-      false,
-      '#accordionCopyOption1'
-    );
+    setStorageParam('expandCopyOption1', false);
     setTimeout(() => {
-      setStorageParam(
-        'expandCopyOption2',
-        true,
-        '#accordionCopyOption2'
-      );
+      setStorageParam('expandCopyOption2', true);
     }, 500)
   } else {
-    setStorageParam(
-      'expandCopyOption2',
-      checked,
-      '#accordionCopyOption2'
-    );
+    setStorageParam('expandCopyOption2', checked);
   }
 }
 const onClickCheckboxUrlShortAmazon = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'urlShortAmazon',
-    checked,
-    '#chkUrlShortAmazon'
-  );
+  setStorageParam('urlShortAmazon', checked);
 }
 const onClickCheckboxUrlNoEncodeJapanese = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'urlNoEncodeJapanese',
-    checked,
-    '#chkUrlNoEncodeJapanese'
-  );
+  setStorageParam('urlNoEncodeJapanese', checked);
 }
 
 const onClickCheckboxTitleAfterDelim = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'titleAfterDelim',
-    checked,
-    '#chkTitleAfterDelim'
-  );
+  setStorageParam('titleAfterDelim', checked);
 }
 
 const onClickAccordionInfoView = e => {
   const { checked } = e.target;
-  setStorageParam(
-    'expandInfoView',
-    checked,
-    '#accordionInfoView'
-  );
+  setStorageParam('expandInfoView', checked);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
